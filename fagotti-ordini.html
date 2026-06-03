@@ -264,12 +264,15 @@ function doLogin(){
     G("pwd").value="";
   }
 }
-G("pwd").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
-if(sessionStorage.getItem("fa")){
-  G("login").classList.add("hidden");
-  G("app").classList.add("on");
-  window.addEventListener("load",startApp);
-}
+document.addEventListener("DOMContentLoaded",function(){
+  var pwd=document.getElementById("pwd");
+  if(pwd) pwd.addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
+  if(sessionStorage.getItem("fa")){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("app").classList.add("on");
+    startApp();
+  }
+});
 
 // FIREBASE
 function sync(s){var m={ok:["#22c55e","● Sync"],lo:["#f59e0b","● ..."],er:["#ef4444","● Err"]};G("sdot").style.background=m[s][0];G("slbl").textContent=m[s][1];G("slbl").style.color=m[s][0];}
