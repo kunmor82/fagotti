@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Fagotti — Ordini</title>
+<!-- Firebase CDN classico (no moduli) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <style>
@@ -21,9 +22,8 @@ body{font-family:Georgia,serif;background:var(--cream);color:var(--nero);min-hei
 #app{display:none;flex-direction:column;min-height:100vh}
 #app.on{display:flex}
 .hdr{background:var(--nero);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
-.ht{color:#fff;font-size:20px;font-weight:bold}
-.hs{color:var(--oro);font-family:sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase}
-.sy{display:flex;align-items:center;gap:5px}
+.ht{color:#fff;font-size:20px;font-weight:bold}.hs{color:var(--oro);font-family:sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase}
+.sy{font-family:sans-serif;font-size:11px;display:flex;align-items:center;gap:5px}
 .nav{display:flex;background:#fff;border-bottom:2px solid var(--brd);position:sticky;top:57px;z-index:99}
 .nb{flex:1;padding:12px 4px;background:transparent;color:#666;border:none;cursor:pointer;font-family:sans-serif;font-size:12px;font-weight:600}
 .nb.on{background:var(--nero);color:var(--oro)}
@@ -31,8 +31,7 @@ body{font-family:Georgia,serif;background:var(--cream);color:var(--nero);min-hei
 .view{display:none}.view.on{display:block}
 .wnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .wb{background:#fff;border:1px solid var(--brd);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:20px;color:var(--nero)}
-.wt{text-align:center}
-.wm{font-family:sans-serif;font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase}
+.wt{text-align:center}.wm{font-family:sans-serif;font-size:11px;color:#888;letter-spacing:1px;text-transform:uppercase}
 .wd{font-family:sans-serif;font-size:13px;color:#444;margin-top:2px}
 .dacc{margin-bottom:8px;border-radius:12px;overflow:hidden;border:1px solid var(--brd);background:#fff}
 .dacc.today{border:2px solid var(--oro)}
@@ -47,11 +46,11 @@ body{font-family:Georgia,serif;background:var(--cream);color:var(--nero);min-hei
 .dacc.today .da{color:#aaa}
 .dbody{display:none}.dbody.open{display:block}
 .or{padding:11px 14px;border-top:1px solid #f5f0e8;display:flex;justify-content:space-between;align-items:flex-start}
-.oc{font-weight:700;font-size:15px}
-.op{font-family:sans-serif;font-size:13px;color:#555;margin-top:2px;line-height:1.7}
+.oc{font-weight:700;font-size:15px}.op{font-family:sans-serif;font-size:13px;color:#555;margin-top:2px}
 .obs{margin-top:4px;display:flex;flex-wrap:wrap;gap:4px}
 .bg{font-size:10px;padding:2px 7px;border-radius:10px;font-family:sans-serif}
-.bgp{background:#dcfce7;color:#166534}.bgc{background:#fff7ed;color:#9a3412}
+.bgf{background:#fef3c7;color:#92400e}.bgd{background:#fce7f3;color:#9d174d}
+.bgp{background:#dcfce7;color:#166634}.bgc{background:#fff7ed;color:#9a3412}
 .onote{font-family:sans-serif;font-size:11px;color:#888;margin-top:3px;font-style:italic}
 .oprice{font-family:sans-serif;font-size:13px;font-weight:700;margin-top:3px}
 .oa{display:flex;gap:6px;margin-left:10px;flex-shrink:0}
@@ -66,27 +65,23 @@ body{font-family:Georgia,serif;background:var(--cream);color:var(--nero);min-hei
 .pi2{color:#aaa;font-family:sans-serif;font-size:12px}
 .pit{padding:9px 14px;border-top:1px solid #f0ebe0}
 .pih{display:flex;justify-content:space-between;align-items:center}
-.pn{font-weight:700;font-size:14px}
-.pq{background:#f0ebe0;border-radius:20px;padding:2px 12px;font-family:sans-serif;font-size:13px;font-weight:700}
-.pdt{font-family:sans-serif;font-size:12px;color:#666;margin-top:3px}
-.pdt span{color:var(--oro)}
+.pn{font-weight:700;font-size:14px}.pq{background:#f0ebe0;border-radius:20px;padding:2px 12px;font-family:sans-serif;font-size:13px;font-weight:700}
+.pdt{font-family:sans-serif;font-size:12px;color:#666;margin-top:3px}.pdt span{color:var(--oro)}
 .tc{margin-top:8px;border-radius:12px;overflow:hidden;border:2px solid var(--oro)}
-.th{background:var(--oro);padding:10px 14px}
-.th span{color:#fff;font-weight:700;font-family:sans-serif;font-size:14px}
+.th{background:var(--oro);padding:10px 14px}.th span{color:#fff;font-weight:700;font-family:sans-serif;font-size:14px}
 .tr2{padding:8px 14px;border-top:1px solid #f0ebe0;display:flex;justify-content:space-between;font-family:sans-serif;font-size:13px;background:#fff}
 .tn{font-weight:700;color:var(--oro)}
 .fw{background:#fff;border-radius:16px;border:1px solid var(--brd);overflow:hidden}
-.fh{background:var(--nero);padding:13px 18px}
-.fh span{color:var(--oro);font-family:sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.fh{background:var(--nero);padding:13px 18px}.fh span{color:var(--oro);font-family:sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase}
 .fb{padding:18px;display:flex;flex-direction:column;gap:14px}
 .fl{display:block;font-family:sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#888;margin-bottom:6px}
 .fi{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--brd);font-family:sans-serif;font-size:15px;color:var(--nero);background:#fafaf8;outline:none}
 textarea.fi{resize:vertical}
 .tog{display:flex;gap:8px}
-.tb{flex:1;padding:10px 6px;border-radius:10px;border:2px solid var(--brd);background:#fff;cursor:pointer;font-family:sans-serif;font-size:12px;font-weight:600;color:#666;text-align:center}
+.tb{flex:1;padding:11px 8px;border-radius:10px;border:2px solid var(--brd);background:#fff;cursor:pointer;font-family:sans-serif;font-size:13px;font-weight:600;color:#666;text-align:center}
 .tb.on{border-color:var(--oro);background:var(--oro-l);color:var(--nero)}
 .row2{display:flex;gap:10px;align-items:center}
-.qinp{width:64px;text-align:center;font-family:sans-serif;font-size:20px;font-weight:700;border:1px solid var(--brd);border-radius:10px;padding:6px 2px;background:#fafaf8;color:var(--nero);outline:none}
+.qinp{width:60px;text-align:center;font-family:sans-serif;font-size:20px;font-weight:700;border:1px solid var(--brd);border-radius:10px;padding:6px 2px;background:#fafaf8;color:var(--nero);outline:none}
 .qb{width:44px;height:44px;border-radius:10px;border:1px solid var(--brd);background:#fff;cursor:pointer;font-size:24px;color:var(--nero);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;font-family:sans-serif}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
 .ch{padding:7px 13px;border-radius:20px;border:1px solid var(--brd);background:#fff;cursor:pointer;font-family:sans-serif;font-size:13px;color:#666}
@@ -94,7 +89,7 @@ textarea.fi{resize:vertical}
 .kgbox{background:var(--oro-l);border-radius:8px;padding:10px 14px;font-family:sans-serif;font-size:14px;border:1px solid #e8d88a;margin-top:6px}
 .kgbox strong{color:var(--oro)}
 .prebox{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px 14px;margin-top:8px}
-.pretot{font-family:sans-serif;font-size:20px;font-weight:700;color:var(--nero);margin-top:4px}
+.pretot{font-family:sans-serif;font-size:22px;font-weight:700;color:var(--nero);margin-top:4px}
 .predet{font-family:sans-serif;font-size:12px;color:#666;margin-top:2px}
 .subb{padding:16px;border:none;border-radius:12px;font-family:sans-serif;font-size:16px;font-weight:700;cursor:pointer;background:var(--nero);color:var(--oro);width:100%}
 .subb:disabled{background:#ccc;color:#fff;cursor:not-allowed}
@@ -103,17 +98,11 @@ textarea.fi{resize:vertical}
 .tipo-btn{flex:1;padding:14px 8px;border-radius:12px;border:2px solid var(--brd);background:#fff;cursor:pointer;font-family:sans-serif;font-size:14px;font-weight:600;color:#666;text-align:center}
 .tipo-btn.on-t{border-color:var(--oro);background:var(--oro-l);color:var(--nero)}
 .tipo-btn.on-s{border-color:#d97706;background:#fffbeb;color:#92400e}
-.ibox{border-radius:10px;padding:12px;margin-bottom:8px;position:relative}
-.ibox.t{background:#fffdf5;border:1px solid #e8d88a}
-.ibox.s{background:#fffbeb;border:1px solid #fde68a}
-.inum{font-family:sans-serif;font-size:11px;font-weight:700;color:#888;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.idel{position:absolute;top:8px;right:8px;background:none;border:1px solid #ef444433;border-radius:8px;color:#ef4444;cursor:pointer;font-size:12px;padding:3px 8px}
-.add-btn{width:100%;padding:10px;border:2px dashed var(--brd);border-radius:10px;background:transparent;font-family:sans-serif;font-size:13px;cursor:pointer;margin-top:4px}
-.add-btn.t{border-color:#e8d88a;color:var(--oro)}
-.add-btn.s{border-color:#fde68a;color:#d97706}
-.orario-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.och{padding:7px 11px;border-radius:20px;border:1px solid var(--brd);background:#fff;cursor:pointer;font-family:sans-serif;font-size:13px;color:var(--nero)}
-.och:active{background:var(--oro-l);border-color:var(--oro)}
+.sec-card{border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.sec-card.t{background:#fffdf5;border:1px solid #e8d88a}
+.sec-card.s{background:#fffbeb;border:1px solid #fde68a}
+.stitle{font-family:sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#888;padding-bottom:8px;border-bottom:1px solid var(--brd);margin-bottom:2px}
+.stitle.t{color:var(--oro)}.stitle.s{color:#d97706}
 </style>
 </head>
 <body>
@@ -122,18 +111,15 @@ textarea.fi{resize:vertical}
   <div class="ls">Pasticceria Artigianale</div>
   <div class="lt">Fagotti</div>
   <div class="ls">Accesso riservato al team</div>
-  <input class="li" type="password" id="pwd" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="off">
+  <input class="li" type="password" id="pwd" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" autocomplete="off">
   <div class="le" id="lerr"></div>
-  <button class="lb" onclick="doLogin()">Entra &rarr;</button>
+  <button class="lb" id="btn-login">Entra &rarr;</button>
 </div>
 
 <div id="app">
   <div class="hdr">
     <div><div class="hs">Pasticceria Artigianale</div><div class="ht">Fagotti &mdash; Ordini</div></div>
-    <div class="sy">
-      <span id="sdot" style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block"></span>
-      <span id="slbl" style="color:#f59e0b;font-family:sans-serif;font-size:11px">...</span>
-    </div>
+    <div class="sy"><span id="sdot" style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;flex-shrink:0"></span><span id="slbl" style="color:#f59e0b;font-family:sans-serif;font-size:11px">...</span></div>
   </div>
   <div class="nav">
     <button class="nb on" id="t0" onclick="goTab(0)">&#128197; Agenda</button>
@@ -151,32 +137,6 @@ textarea.fi{resize:vertical}
           <div><label class="fl">Telefono</label><input id="ftel" class="fi" type="tel" placeholder="+39 ..."></div>
           <div><label class="fl">Data consegna *</label><input id="fdata" class="fi" type="date"></div>
           <div>
-            <label class="fl">Orario consegna</label>
-            <div style="display:flex;align-items:center;gap:8px">
-              <input id="forario" class="fi" type="time" style="flex:1;font-size:18px;font-weight:700;text-align:center">
-              <button onclick="G('forario').value=''" style="padding:10px 14px;border:1px solid var(--brd);border-radius:10px;background:#fff;cursor:pointer;font-family:sans-serif;font-size:13px;color:#888">&#10005;</button>
-            </div>
-            <div class="orario-chips">
-              <button class="och" onclick="G('forario').value='08:00'">8:00</button>
-              <button class="och" onclick="G('forario').value='08:30'">8:30</button>
-              <button class="och" onclick="G('forario').value='09:00'">9:00</button>
-              <button class="och" onclick="G('forario').value='09:30'">9:30</button>
-              <button class="och" onclick="G('forario').value='10:00'">10:00</button>
-              <button class="och" onclick="G('forario').value='10:30'">10:30</button>
-              <button class="och" onclick="G('forario').value='11:00'">11:00</button>
-              <button class="och" onclick="G('forario').value='11:30'">11:30</button>
-              <button class="och" onclick="G('forario').value='12:00'">12:00</button>
-              <button class="och" onclick="G('forario').value='12:30'">12:30</button>
-              <button class="och" onclick="G('forario').value='13:00'">13:00</button>
-              <button class="och" onclick="G('forario').value='14:00'">14:00</button>
-              <button class="och" onclick="G('forario').value='15:00'">15:00</button>
-              <button class="och" onclick="G('forario').value='16:00'">16:00</button>
-              <button class="och" onclick="G('forario').value='17:00'">17:00</button>
-              <button class="och" onclick="G('forario').value='18:00'">18:00</button>
-              <button class="och" onclick="G('forario').value='19:00'">19:00</button>
-            </div>
-          </div>
-          <div>
             <label class="fl">Modalit&agrave;</label>
             <div class="tog">
               <button id="btn-ritiro" class="tb on" onclick="setConsegna(false)">&#127978; Ritiro</button>
@@ -184,30 +144,108 @@ textarea.fi{resize:vertical}
             </div>
           </div>
           <div>
-            <label class="fl">Cosa ordina?</label>
+            <label class="fl">Cosa ordina? (anche entrambi)</label>
             <div class="tipo-sel">
               <button id="tipo-t" class="tipo-btn" onclick="togTipo('t')">&#127874; Torta / Dolce</button>
               <button id="tipo-s" class="tipo-btn" onclick="togTipo('s')">&#127973; Salato</button>
             </div>
           </div>
+          <!-- TORTA -->
           <div id="sec-t" style="display:none">
-            <div id="torte-list"></div>
-            <button class="add-btn t" onclick="addTorta()">&#xFF0B; Aggiungi altra torta</button>
+            <div class="sec-card t">
+              <div class="stitle t">&#127874; Torta / Dolce</div>
+              <div><label class="fl">Prodotto</label>
+                <input id="fprod" class="fi" type="text" list="dl-t" placeholder="Es: Tiramisù, Sacher..." autocomplete="off" oninput="onTChange()" onchange="onTChange()">
+                <datalist id="dl-t"><option>Afrodite</option><option>Black Forest</option><option>Brownie</option><option>Caprese</option><option>Cestino Fagottini</option><option>Charlotte cioccolato</option><option>Charlotte limone</option><option>Cheesecake</option><option>Cream tart</option><option>Crema al burro</option><option>Crostata marmellata</option><option>Crostata cioccolato</option><option>Crostata ricotta</option><option>Crostata frutta</option><option>Diplomatica</option><option>Dolce castagne</option><option>Dolce arachidi/nocciole</option><option>Dolce Fagotti</option><option>Dolce Ilaria</option><option>Kinder</option><option>Lemon tart</option><option>Mandarinoir</option><option>Marika</option><option>Meringata cioccolato/fragole</option><option>Meringata frutti bosco</option><option>Meringata limone/castagne</option><option>Millefoglie classico</option><option>Millefoglie frutti bosco</option><option>Millefoglie fragole</option><option>Mimosa</option><option>Montblanc</option><option>Moretta</option><option>Ohana</option><option>Pasta zucchero</option><option>Pastiera</option><option>Pavlova</option><option>Profitterole</option><option>Red Velvet</option><option>Sacher</option><option>Saint Honorè</option><option>Serendipity</option><option>Settembrina</option><option>Struffoli</option><option>Sveva</option><option>Tiramisù classico</option><option>Tiramisù fragole</option><option>Tre cioccolati</option><option>Tronchetto Natale</option><option>Ugly cake</option><option>Zuccotto</option><option>Torta Gelato</option><option>Zuppa inglese</option><option>Cornetto vuoto</option><option>Cornetto crema</option><option>Cornetto cioccolato</option><option>Cornetto marmellata</option><option>Fagottino</option><option>Bignè</option><option>Pasticcino misto</option><option>Cannolo</option><option>Macaron</option><option>Croissant</option><option>Mignon misto</option><option>Tartelletta frutta</option></datalist>
+              </div>
+              <div><label class="fl">N&deg; torte</label>
+                <div class="row2">
+                  <button class="qb" onclick="adjN('qt',-1)">&#8722;</button>
+                  <input type="number" id="disp-qt" class="qinp" min="1" value="1" oninput="setN('qt',this.value)">
+                  <button class="qb" onclick="adjN('qt',1)">+</button>
+                  <span style="font-family:sans-serif;font-size:13px;color:#888" id="lbl-t">torta</span>
+                </div>
+              </div>
+              <div><label class="fl">Formato</label>
+                <div class="tog" style="margin-bottom:8px">
+                  <button id="btn-kg" class="tb on" onclick="setModo(true)">&#128207; Per kg</button>
+                  <button id="btn-pers" class="tb" onclick="setModo(false)">&#128101; Per persone</button>
+                </div>
+                <div id="sec-kg">
+                  <div class="chips" id="chips-peso">
+                    <button class="ch" onclick="setPeso(this,'500g')">500g</button><button class="ch on" onclick="setPeso(this,'1kg')">1kg</button><button class="ch" onclick="setPeso(this,'1.5kg')">1.5kg</button><button class="ch" onclick="setPeso(this,'2kg')">2kg</button><button class="ch" onclick="setPeso(this,'2.5kg')">2.5kg</button><button class="ch" onclick="setPeso(this,'3kg')">3kg</button><button class="ch" onclick="setPeso(this,'4kg')">4kg</button><button class="ch" onclick="setPeso(this,'5kg')">5kg</button>
+                  </div>
+                </div>
+                <div id="sec-pers" style="display:none;margin-top:8px">
+                  <div class="row2" style="margin-bottom:8px">
+                    <button class="qb" onclick="adjN('pe',-1,2)">&#8722;</button>
+                    <input type="number" id="disp-pe" class="qinp" min="2" value="8" oninput="setN('pe',this.value)">
+                    <button class="qb" onclick="adjN('pe',1)">+</button>
+                  </div>
+                  <div style="font-family:sans-serif;font-size:13px;color:#666;margin-bottom:4px">Porzione: <span id="lbl-g">150</span>g/persona</div>
+                  <input type="range" style="width:100%;accent-color:var(--oro);margin:6px 0" id="sl-g" min="120" max="170" step="5" value="150" oninput="updG(this.value)">
+                  <div style="display:flex;justify-content:space-between;font-family:sans-serif;font-size:11px;color:#bbb"><span>120g</span><span>150g</span><span>170g</span></div>
+                  <div class="kgbox" id="kgbox">8 pers &times; 150g = <strong>~1.20 kg</strong></div>
+                </div>
+              </div>
+              <div><label class="fl">Prezzo &euro;/kg <span id="lbl-lk" style="font-weight:400;color:#aaa"></span></label>
+                <input id="fpk" class="fi" type="number" step="0.5" placeholder="&euro;/kg" oninput="updP()">
+                <div id="pbox" style="display:none" class="prebox">
+                  <div style="font-family:sans-serif;font-size:11px;color:#0369a1;text-transform:uppercase;letter-spacing:1px">Preventivo torta</div>
+                  <div class="pretot" id="ptot">&euro; 0.00</div>
+                  <div class="predet" id="pdet"></div>
+                </div>
+              </div>
+              <div><label class="fl">Farcitura</label><input id="ffar" class="fi" type="text" placeholder="Es: fragole, pistacchio..."></div>
+              <div><label class="fl">Decorazione / Scritta</label><input id="fdec" class="fi" type="text" placeholder="Es: Buon compleanno Marco..."></div>
+            </div>
           </div>
+          <!-- SALATO -->
           <div id="sec-s" style="display:none">
-            <div id="salati-list"></div>
-            <button class="add-btn s" onclick="addSalato()">&#xFF0B; Aggiungi altro salato</button>
-          </div>
-          <div>
-            <label class="fl">Foto di riferimento</label>
-            <div style="display:flex;gap:8px;margin-bottom:8px">
-              <a href="https://drive.google.com/drive/folders/1LJJZRq29sQWBa4sAHn6iRVWzXBf8cytu" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;background:#fff;border:1px solid var(--brd);border-radius:10px;font-family:sans-serif;font-size:13px;font-weight:600;color:#1a73e8;text-decoration:none">&#128206; Apri Drive</a>
+            <div class="sec-card s">
+              <div class="stitle s">&#127973; Salato</div>
+              <div><label class="fl">Prodotto salato</label>
+                <input id="fsprod" class="fi" type="text" list="dl-s" placeholder="Es: Pizzette, Tramezzini..." autocomplete="off" oninput="onSChange()" onchange="onSChange()">
+                <datalist id="dl-s"><option>Bottoncini/cornettini/genovesi</option><option>Pizzette/rustici</option><option>Torte rustiche</option><option>Tramezzini mignon</option><option>Mini supplì/crocchette</option><option>Pan Brioche (30 pz)</option><option>Bignè fritti ripieni</option><option>Tartine/panzerottini</option><option>Pain suisse</option></datalist>
+              </div>
+              <!-- a kg -->
+              <div id="sec-skg" style="display:none;flex-direction:column;gap:10px">
+                <div><label class="fl">Peso</label>
+                  <div class="chips" id="chips-s">
+                    <button class="ch" onclick="setSP(this,'0.5kg')">0.5kg</button><button class="ch on" onclick="setSP(this,'1kg')">1kg</button><button class="ch" onclick="setSP(this,'1.5kg')">1.5kg</button><button class="ch" onclick="setSP(this,'2kg')">2kg</button><button class="ch" onclick="setSP(this,'3kg')">3kg</button><button class="ch" onclick="setSP(this,'4kg')">4kg</button><button class="ch" onclick="setSP(this,'5kg')">5kg</button>
+                  </div>
+                </div>
+                <div><label class="fl">Prezzo &euro;/kg <span id="lbl-slk" style="font-weight:400;color:#aaa"></span></label>
+                  <input id="fspk" class="fi" type="number" step="0.5" placeholder="&euro;/kg" oninput="updSP()">
+                  <div id="spbox" style="display:none" class="prebox">
+                    <div style="font-family:sans-serif;font-size:11px;color:#d97706;text-transform:uppercase;letter-spacing:1px">Preventivo salato</div>
+                    <div class="pretot" id="sptot" style="color:#92400e">&euro; 0.00</div>
+                    <div class="predet" id="spdet"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- a pz -->
+              <div id="sec-spz" style="display:none;flex-direction:column;gap:10px">
+                <div><label class="fl">Quantit&agrave; (pezzi)</label>
+                  <div class="row2">
+                    <button class="qb" onclick="adjN('sq',-1)">&#8722;</button>
+                    <input type="number" id="disp-sq" class="qinp" min="1" value="1" oninput="setN('sq',this.value)">
+                    <button class="qb" onclick="adjN('sq',1)">+</button>
+                    <span style="font-family:sans-serif;font-size:13px;color:#888">pz</span>
+                  </div>
+                </div>
+                <div><label class="fl">Prezzo &euro;/pz <span id="lbl-spz" style="font-weight:400;color:#aaa"></span></label>
+                  <input id="fsppz" class="fi" type="number" step="0.1" placeholder="&euro;/pz" oninput="updSPz()">
+                  <div id="spzbox" style="display:none" class="prebox">
+                    <div style="font-family:sans-serif;font-size:11px;color:#d97706;text-transform:uppercase;letter-spacing:1px">Preventivo salato</div>
+                    <div class="pretot" id="spztot" style="color:#92400e">&euro; 0.00</div>
+                    <div class="predet" id="spzdet"></div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <input id="fnref" class="fi" type="url" placeholder="Incolla link foto da Drive..." oninput="updFoto()">
-            <div id="foto-prev" style="display:none;margin-top:6px;padding:8px 12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-family:sans-serif;font-size:13px">
-              &#128279; <a id="foto-lnk" href="#" target="_blank" style="color:#1a73e8">Vedi foto allegata</a>
-            </div>
           </div>
+          <div><label class="fl">Note foto / riferimento</label><input id="fnref" class="fi" type="text" placeholder="Es: foto WhatsApp, @instagram..."></div>
           <div><label class="fl">Note aggiuntive</label><textarea id="fnote" class="fi" rows="2" placeholder="Allergie, orario, richieste..."></textarea></div>
           <button id="sbtn" class="subb" onclick="doSub()" disabled>&#10003; Aggiungi ordine</button>
           <button id="cbtn" class="canb" style="display:none" onclick="goAgenda()">Annulla</button>
@@ -217,22 +255,25 @@ textarea.fi{resize:vertical}
   </div>
 </div>
 
-<datalist id="dl-t">
-  <option>Afrodite</option><option>Black Forest</option><option>Brownie</option><option>Caprese</option><option>Cestino Fagottini</option><option>Charlotte cioccolato</option><option>Charlotte limone</option><option>Cheesecake</option><option>Cream tart</option><option>Crema al burro</option><option>Crostata marmellata</option><option>Crostata cioccolato</option><option>Crostata ricotta</option><option>Crostata frutta</option><option>Diplomatica</option><option>Dolce castagne</option><option>Dolce arachidi/nocciole</option><option>Dolce Fagotti</option><option>Dolce Ilaria</option><option>Kinder</option><option>Lemon tart</option><option>Mandarinoir</option><option>Marika</option><option>Meringata cioccolato/fragole</option><option>Meringata frutti bosco</option><option>Meringata limone/castagne</option><option>Millefoglie classico</option><option>Millefoglie frutti bosco</option><option>Millefoglie fragole</option><option>Mimosa</option><option>Montblanc</option><option>Moretta</option><option>Ohana</option><option>Pasta zucchero</option><option>Pastiera</option><option>Pavlova</option><option>Profitterole</option><option>Red Velvet</option><option>Sacher</option><option>Saint Honorè</option><option>Serendipity</option><option>Settembrina</option><option>Struffoli</option><option>Sveva</option><option>Tiramisù classico</option><option>Tiramisù fragole</option><option>Tre cioccolati</option><option>Tronchetto Natale</option><option>Ugly cake</option><option>Zuccotto</option><option>Torta Gelato</option><option>Zuppa inglese</option><option>Cornetto vuoto</option><option>Cornetto crema</option><option>Cornetto cioccolato</option><option>Cornetto marmellata</option><option>Fagottino</option><option>Bignè</option><option>Pasticcino misto</option><option>Cannolo</option><option>Macaron</option><option>Croissant</option><option>Mignon misto</option><option>Tartelletta frutta</option>
-</datalist>
-<datalist id="dl-s">
-  <option>Bottoncini/cornettini/genovesi</option><option>Pizzette/rustici</option><option>Torte rustiche</option><option>Tramezzini mignon</option><option>Mini supplì/crocchette</option><option>Pan Brioche (30 pz)</option><option>Bignè fritti ripieni</option><option>Tartine/panzerottini</option><option>Pain suisse</option>
-</datalist>
-
 <script>
-firebase.initializeApp({apiKey:"AIzaSyDTZFJlCeH6pmwE3tp3qU5dGh7x6XrHe2Q",authDomain:"ordini-fagotti-bd9d8.firebaseapp.com",projectId:"ordini-fagotti-bd9d8",storageBucket:"ordini-fagotti-bd9d8.firebasestorage.app",messagingSenderId:"968063747672",appId:"1:968063747672:web:6c2476600dfeea517cec2d"});
-var db=firebase.firestore();
+// ── FIREBASE INIT ──
+var fbConfig = {
+  apiKey:"AIzaSyDTZFJlCeH6pmwE3tp3qU5dGh7x6XrHe2Q",
+  authDomain:"ordini-fagotti-bd9d8.firebaseapp.com",
+  projectId:"ordini-fagotti-bd9d8",
+  storageBucket:"ordini-fagotti-bd9d8.firebasestorage.app",
+  messagingSenderId:"968063747672",
+  appId:"1:968063747672:web:6c2476600dfeea517cec2d"
+};
+firebase.initializeApp(fbConfig);
+var db = firebase.firestore();
 
-var LISTINO={"Afrodite":30,"Black Forest":27,"Brownie":27,"Caprese":27,"Cestino Fagottini":35,"Charlotte cioccolato":27,"Charlotte limone":35,"Cheesecake":30,"Cream tart":30,"Crema al burro":30,"Crostata marmellata":27,"Crostata cioccolato":27,"Crostata ricotta":27,"Crostata frutta":30,"Diplomatica":27,"Dolce castagne":35,"Dolce arachidi/nocciole":35,"Dolce Fagotti":30,"Dolce Ilaria":27,"Kinder":27,"Lemon tart":30,"Mandarinoir":35,"Marika":35,"Meringata cioccolato/fragole":27,"Meringata frutti bosco":30,"Meringata limone/castagne":35,"Millefoglie classico":27,"Millefoglie frutti bosco":30,"Millefoglie fragole":27,"Mimosa":27,"Montblanc":35,"Moretta":27,"Ohana":30,"Pasta zucchero":35,"Pastiera":30,"Pavlova":30,"Profitterole":27,"Red Velvet":30,"Sacher":27,"Saint Honorè":27,"Serendipity":35,"Settembrina":35,"Struffoli":35,"Sveva":35,"Tiramisù classico":30,"Tiramisù fragole":30,"Tre cioccolati":30,"Tronchetto Natale":35,"Ugly cake":30,"Zuccotto":27,"Torta Gelato":27,"Zuppa inglese":27};
-var SAL_KG=["Bottoncini/cornettini/genovesi","Pizzette/rustici","Torte rustiche"];
-var SAL_PZ=["Tramezzini mignon","Mini supplì/crocchette","Pan Brioche (30 pz)","Bignè fritti ripieni","Tartine/panzerottini","Pain suisse"];
-var GIORNI=["Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato","Domenica"];
-var DRIVE="https://drive.google.com/drive/folders/1LJJZRq29sQWBa4sAHn6iRVWzXBf8cytu";
+// ── DATI ──
+var LISTINO = {"Afrodite":30,"Black Forest":27,"Brownie":27,"Caprese":27,"Cestino Fagottini":35,"Charlotte cioccolato":27,"Charlotte limone":35,"Cheesecake":30,"Cream tart":30,"Crema al burro":30,"Crostata marmellata":27,"Crostata cioccolato":27,"Crostata ricotta":27,"Crostata frutta":30,"Diplomatica":27,"Dolce castagne":35,"Dolce arachidi/nocciole":35,"Dolce Fagotti":30,"Dolce Ilaria":27,"Kinder":27,"Lemon tart":30,"Mandarinoir":35,"Marika":35,"Meringata cioccolato/fragole":27,"Meringata frutti bosco":30,"Meringata limone/castagne":35,"Millefoglie classico":27,"Millefoglie frutti bosco":30,"Millefoglie fragole":27,"Mimosa":27,"Montblanc":35,"Moretta":27,"Ohana":30,"Pasta zucchero":35,"Pastiera":30,"Pavlova":30,"Profitterole":27,"Red Velvet":30,"Sacher":27,"Saint Honorè":27,"Serendipity":35,"Settembrina":35,"Struffoli":35,"Sveva":35,"Tiramisù classico":30,"Tiramisù fragole":30,"Tre cioccolati":30,"Tronchetto Natale":35,"Ugly cake":30,"Zuccotto":27,"Torta Gelato":27,"Zuppa inglese":27};
+var LSK = {"Bottoncini/cornettini/genovesi":27,"Pizzette/rustici":27,"Torte rustiche":27};
+var LSP = {"Tramezzini mignon":1.5,"Mini supplì/crocchette":1,"Pan Brioche (30 pz)":35,"Bignè fritti ripieni":1,"Tartine/panzerottini":1.5,"Pain suisse":3.5};
+var SAL_KG = Object.keys(LSK), SAL_PZ = Object.keys(LSP);
+var GIORNI = ["Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato","Domenica"];
 
 function p2kg(p){return p.endsWith("kg")?parseFloat(p):parseFloat(p)/1000;}
 function cKg(n,g){return n*g/1000;}
@@ -241,15 +282,14 @@ function fd(iso){try{var a=iso.split("-");return a[2]+"/"+a[1];}catch(e){return 
 function fdf(iso){try{var a=iso.split("-");return a[2]+"/"+a[1]+"/"+a[0];}catch(e){return iso;}}
 function xe(s){return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 function G(id){return document.getElementById(id);}
-function orMin(s){if(!s)return 9999;var m=s.match(/^(\d{1,2}):(\d{2})$/);if(m)return parseInt(m[1])*60+parseInt(m[2]);var m2=s.match(/(\d+)/);return m2?parseInt(m2[1])*60:9999;}
 
-var ordini=[],wOff=0,openD={},editId=null,fConsegna=false,fHasT=false,fHasS=false;
-var TI=[],SI=[];// torteItems, salatiItems
+// ── STATE ──
+var ordini=[], wOff=0, openD={}, editId=null;
+var fConsegna=false, fHasT=false, fHasS=false;
+var fModoKg=true, fPeso="1kg", fPersone=8, fGrammi=150, fQtT=1;
+var fSalPeso="1kg", fSalQta=1;
 
-function newT(){return {prodotto:"",modo:"kg",peso:"1kg",persone:8,grammi:150,qtaTorte:1,pezzi:1,prezzoKg:"",farcitura:"",decorazione:""};}
-function newS(){return {prodotto:"",modo:"pz",peso:"1kg",qta:1};}
-
-// AUTH
+// ── AUTH ──
 function doLogin(){
   if(G("pwd").value==="fagotti2024"){
     sessionStorage.setItem("fa","1");
@@ -261,142 +301,154 @@ function doLogin(){
     G("pwd").value="";
   }
 }
-G("pwd").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
+G("btn-login").addEventListener("click", doLogin);
+G("pwd").addEventListener("keydown", function(e){if(e.key==="Enter")doLogin();});
+
+// ── SYNC ──
+function setSync(s){
+  var m={ok:["#22c55e","● Sync"],lo:["#f59e0b","● ..."],er:["#ef4444","● Err"]};
+  G("sdot").style.background=m[s][0]; G("slbl").textContent=m[s][1]; G("slbl").style.color=m[s][0];
+}
+
+// ── START ──
+function startApp(){
+  G("fdata").value=td();
+  setSync("lo");
+  db.collection("ordini").onSnapshot(function(snap){
+    ordini=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});
+    setSync("ok"); renderA(); renderP();
+  }, function(){setSync("er");});
+  resetForm();
+}
+
+function saveO(o){
+  var c={};
+  Object.keys(o).forEach(function(k){if(o[k]!==undefined&&o[k]!==null)c[k]=o[k];});
+  return db.collection("ordini").doc(String(c.id)).set(c);
+}
+function delO(id){return db.collection("ordini").doc(String(id)).delete();}
+
 if(sessionStorage.getItem("fa")){
   G("login").classList.add("hidden");
   G("app").classList.add("on");
-  window.addEventListener("load",startApp);
+  window.addEventListener("load", startApp);
 }
 
-// FIREBASE
-function sync(s){var m={ok:["#22c55e","● Sync"],lo:["#f59e0b","● ..."],er:["#ef4444","● Err"]};G("sdot").style.background=m[s][0];G("slbl").textContent=m[s][1];G("slbl").style.color=m[s][0];}
-function startApp(){
-  G("fdata").value=td();
-  sync("lo");
-  db.collection("ordini").onSnapshot(function(snap){
-    ordini=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});
-    sync("ok");rA();rP();
-  },function(){sync("er");});
-  resetForm();
+// ── TABS ──
+function goTab(n){
+  [0,1,2].forEach(function(i){
+    G("t"+i).classList.toggle("on",i===n);
+    G("v"+i).classList.toggle("on",i===n);
+  });
+  if(n===0)renderA();
+  if(n===1)renderP();
+  if(n===2&&!editId)resetForm();
+  G("t2").textContent=editId?"✏️ Modifica":"＋ Ordine";
 }
-function saveO(o){var c={};Object.keys(o).forEach(function(k){if(o[k]!==undefined&&o[k]!==null)c[k]=o[k];});return db.collection("ordini").doc(String(c.id)).set(c);}
-function delO(id){return db.collection("ordini").doc(String(id)).delete();}
-
-// TABS
-function goTab(n){[0,1,2].forEach(function(i){G("t"+i).classList.toggle("on",i===n);G("v"+i).classList.toggle("on",i===n);});if(n===0)rA();if(n===1)rP();if(n===2&&!editId)resetForm();G("t2").textContent=editId?"✏️ Modifica":"＋ Ordine";}
 function goAgenda(){editId=null;resetForm();G("t2").textContent="＋ Ordine";goTab(0);}
-function togD(k){openD[k]=!openD[k];var b=G("db-"+k);if(b)b.classList.toggle("open",openD[k]);var a=G("da-"+k);if(a)a.style.transform=openD[k]?"rotate(90deg)":"rotate(0deg)";}
-function chW(d){wOff+=d;openD={};rA();rP();}
-function wLbl(o){var m={0:"Settimana corrente",1:"Prossima settimana","-1":"Settimana scorsa"};return m[o]||(o>0?"+"+o+" sett.":o+" sett.");}
-function wDates(off){var n=new Date(),dy=n.getDay(),di=n.getDate()-dy+(dy===0?-6:1)+off*7;var mo=new Date(new Date().setDate(di));return Array.from({length:7},function(_,i){var d=new Date(mo);d.setDate(mo.getDate()+i);return d.toISOString().split("T")[0];});}
-function opg(d){return ordini.filter(function(o){return o.data===d;}).sort(function(a,b){var oa=orMin(a.orario),ob=orMin(b.orario);return oa!==ob?oa-ob:(a.cliente||"").localeCompare(b.cliente||"");});}
 
-// CALC
-function calcT(t){
-  var pk=parseFloat(t.prezzoKg)||LISTINO[t.prodotto]||0;
-  var kg=0;
-  if(t.modo==="kg") kg=p2kg(t.peso||"1kg")*(t.qtaTorte||1);
-  else if(t.modo==="pers") kg=cKg(t.persone||8,t.grammi||150)*(t.qtaTorte||1);
-  return pk*kg;
+// ── ACCORDION ──
+function togD(k){
+  openD[k]=!openD[k];
+  var b=G("db-"+k); if(b)b.classList.toggle("open",openD[k]);
+  var a=G("da-"+k); if(a)a.style.transform=openD[k]?"rotate(90deg)":"rotate(0deg)";
 }
+function chW(d){wOff+=d;openD={};renderA();renderP();}
+
+// ── CALCOLI ──
 function calcTot(o){
   var tot=0;
-  if(o.prodotto) tot+=calcT({prodotto:o.prodotto,modo:o.modo||(o.modoKg===false?"pers":"kg"),peso:o.peso,persone:o.persone,grammi:o.grammi,qtaTorte:o.qtaTorte,prezzoKg:o.prezzoKg});
-  if(o.torteExtra) o.torteExtra.forEach(function(t){tot+=calcT(t);});
+  if(o.prodotto){
+    var pk=parseFloat(o.prezzoKg)||LISTINO[o.prodotto]||0;
+    var kg=o.modoKg?p2kg(o.peso||"1kg")*(o.qtaTorte||1):cKg(o.persone||8,o.grammi||150)*(o.qtaTorte||1);
+    tot+=pk*kg;
+  }
+  if(o.salProdotto){
+    if(o.salModo==="kg") tot+=(parseFloat(o.salPrezzoKg)||0)*p2kg(o.salPeso||"1kg");
+    else tot+=(parseFloat(o.salPrezzoPz)||0)*(o.salQta||1);
+  }
   if(o.consegna) tot+=10;
   return tot;
 }
 
-function tLine(t){
-  var pw="";
-  if(t.modo==="kg") pw=t.peso||"1kg";
-  else if(t.modo==="pz") pw=(t.pezzi||1)+" pz";
-  else pw=(t.persone||8)+"p (~"+cKg(t.persone||8,t.grammi||150).toFixed(2)+"kg)";
-  var l="🎂 "+xe(t.prodotto)+" · "+pw;
-  if(t.modo!=="pz"&&(t.qtaTorte||1)>1) l+=" × "+(t.qtaTorte)+" torte";
-  if(t.farcitura) l+=" | "+xe(t.farcitura);
-  if(t.decorazione) l+=" | "+xe(t.decorazione);
-  return l;
+// ── AGENDA ──
+function opg(d){
+  return ordini.filter(function(o){return o.data===d;}).sort(function(a,b){return(a.cliente||"").localeCompare(b.cliente||"");});
 }
-function sLine(s){
-  var sw=s.salModo==="kg"||s.modo==="kg"?(s.salPeso||s.peso||"1kg"):(s.salQta||s.qta||1)+" pz";
-  return "🥗 "+xe(s.salProdotto||s.prodotto)+" · "+sw;
+function wDates(off){
+  var n=new Date(),dy=n.getDay(),di=n.getDate()-dy+(dy===0?-6:1)+off*7;
+  var mo=new Date(new Date().setDate(di));
+  return Array.from({length:7},function(_,i){var d=new Date(mo);d.setDate(mo.getDate()+i);return d.toISOString().split("T")[0];});
 }
+function wLbl(o){var m={0:"Settimana corrente",1:"Prossima settimana","-1":"Settimana scorsa"};return m[o]||(o>0?"+"+o+" sett.":o+" sett.");}
 
-// AGENDA
-function rA(){
-  var dates=wDates(wOff),ts=td(),tot=dates.reduce(function(s,d){return s+opg(d).length;},0);
+function renderA(){
+  var dates=wDates(wOff), ts=td(), tot=dates.reduce(function(s,d){return s+opg(d).length;},0);
   var h='<div class="wnav"><button class="wb" onclick="chW(-1)">&#8249;</button><div class="wt"><div class="wm">'+wLbl(wOff)+'</div><div class="wd">'+fdf(dates[0])+" &mdash; "+fdf(dates[6])+'</div></div><button class="wb" onclick="chW(1)">&#8250;</button></div>';
   h+='<div class="wtot"><span>'+tot+' ordini questa settimana</span></div>';
-  h+='<div style="display:flex;gap:8px;margin-bottom:14px">';
-  h+='<a href="'+DRIVE+'" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;background:#fff;border:1px solid var(--brd);border-radius:10px;font-family:sans-serif;font-size:13px;font-weight:600;color:#1a73e8;text-decoration:none">&#128206; Foto ordini</a>';
-  h+='<button onclick="printDay()" style="flex:1;padding:11px;background:#fff;border:1px solid var(--brd);border-radius:10px;font-family:sans-serif;font-size:13px;font-weight:600;color:var(--nero);cursor:pointer">&#128424; Stampa giorno</button>';
-  h+='</div>';
   dates.forEach(function(date,i){
-    var day=opg(date),isT=date===ts;
-    if(isT&&day.length>0&&openD[date]===undefined) openD[date]=true;
+    var day=opg(date), isT=date===ts;
+    if(isT&&day.length>0&&openD[date]===undefined)openD[date]=true;
     var open=!!openD[date];
     h+='<div class="dacc'+(isT?" today":"")+'"><div class="dtr" onclick="togD(\''+date+'\')"><div style="display:flex;align-items:center;gap:10px"><span class="dn">'+GIORNI[i]+'</span><span style="font-size:12px;opacity:.6;font-family:sans-serif">'+fd(date)+'</span></div><div class="dr"><span class="dc'+(day.length?" has":"")+'">'+day.length+'</span><span class="da" id="da-'+date+'" style="transform:'+(open?"rotate(90deg)":"rotate(0deg)")+'">›</span></div></div>';
     h+='<div class="dbody'+(open?" open":"")+'" id="db-'+date+'">';
     if(!day.length){h+='<div class="ed">Nessun ordine</div>';}
     else{day.forEach(function(o){
-      var tot=calcTot(o),pl="";
-      if(o.prodotto){pl+=tLine({prodotto:o.prodotto,modo:o.modo||(o.modoKg===false?"pers":"kg"),peso:o.peso,persone:o.persone,grammi:o.grammi,qtaTorte:o.qtaTorte,pezzi:o.pezzi,farcitura:o.farcitura,decorazione:o.decorazione});}
-      if(o.torteExtra) o.torteExtra.forEach(function(t){if(pl)pl+="<br>";pl+=tLine(t);});
-      if(o.salProdotto){if(pl)pl+="<br>";pl+=sLine({salProdotto:o.salProdotto,salModo:o.salModo,salPeso:o.salPeso,salQta:o.salQta});}
-      if(o.salatiExtra) o.salatiExtra.forEach(function(s){if(pl)pl+="<br>";pl+=sLine(s);});
+      var tot2=calcTot(o), pl="";
+      if(o.prodotto){
+        var pw=o.modoKg?(o.peso||"1kg"):(o.persone||8)+"p";
+        pl='<span style="color:var(--oro)">🎂 </span>'+xe(o.prodotto)+'<span style="color:var(--oro)"> · '+pw+'</span>'+((o.qtaTorte||1)>1?'<span style="color:#888"> × '+o.qtaTorte+'</span>':"");
+      }
+      if(o.salProdotto){
+        var sw=o.salModo==="kg"?(o.salPeso||"1kg"):(o.salQta||1)+" pz";
+        if(pl)pl+="<br>";
+        pl+='<span style="color:#d97706">🥗 </span>'+xe(o.salProdotto)+'<span style="color:#d97706"> · '+sw+'</span>';
+      }
       var bg=[];
-      if(o.telefono) bg.push('<span class="bg bgp">📞 '+xe(o.telefono)+'</span>');
-      if(o.consegna) bg.push('<span class="bg bgc">🚗 Consegna</span>');
+      if(o.telefono)bg.push('<span class="bg bgp">📞 '+xe(o.telefono)+'</span>');
+      if(o.consegna)bg.push('<span class="bg bgc">🚗 Consegna</span>');
+      if(o.farcitura)bg.push('<span class="bg bgf">🍓 '+xe(o.farcitura)+'</span>');
+      if(o.decorazione)bg.push('<span class="bg bgd">✨ '+xe(o.decorazione)+'</span>');
       var oid=String(o.id).replace(/'/g,"\\'");
-      h+='<div class="or"><div style="flex:1;min-width:0">';
-      h+='<div class="oc">'+xe(o.cliente)+(o.orario?'<span style="font-family:sans-serif;font-size:13px;font-weight:700;color:var(--oro);margin-left:8px">⏰ '+o.orario+'</span>':'')+'</div>';
-      h+='<div class="op">'+pl+'</div>';
-      if(bg.length) h+='<div class="obs">'+bg.join("")+'</div>';
-      if(tot>0) h+='<div class="oprice">€ '+tot.toFixed(2)+(o.consegna?' <span style="font-weight:400;font-size:11px;color:#888">(+€10)</span>':'')+'</div>';
-      if(o.noteRif) h+='<div class="onote"><a href="'+o.noteRif+'" target="_blank" style="color:#1a73e8;text-decoration:none">&#128206; Foto allegata</a></div>';
-      if(o.note) h+='<div class="onote">📝 '+xe(o.note)+'</div>';
-      h+='</div><div class="oa"><button class="bi be" onclick="doEdit(\''+oid+'\')">✏️</button><button class="bi bd" onclick="doDel(\''+oid+'\')">🗑️</button></div></div>';
+      h+='<div class="or"><div style="flex:1;min-width:0"><div class="oc">'+xe(o.cliente)+'</div><div class="op">'+pl+'</div>'+(bg.length?'<div class="obs">'+bg.join("")+'</div>':'')+(tot2>0?'<div class="oprice">€ '+tot2.toFixed(2)+(o.consegna?' <span style="font-weight:400;font-size:11px;color:#888">(+€10)</span>':'')+'</div>':'')+(o.noteRif?'<div class="onote">📸 '+xe(o.noteRif)+'</div>':'')+(o.note?'<div class="onote">📝 '+xe(o.note)+'</div>':'')+'</div><div class="oa"><button class="bi be" onclick="doEdit(\''+oid+'\')">✏️</button><button class="bi bd" onclick="doDel(\''+oid+'\')">🗑️</button></div></div>';
     });}
     h+='</div></div>';
   });
   G("v0").innerHTML=h;
 }
 
-// PRODUZIONE
-function rP(){
+// ── PRODUZIONE ──
+function renderP(){
   var dates=wDates(wOff);
   var h='<div class="wnav"><button class="wb" onclick="chW(-1)">&#8249;</button><div class="wt"><div class="wm">Piano di produzione</div><div class="wd">'+fdf(dates[0])+" &mdash; "+fdf(dates[6])+'</div></div><button class="wb" onclick="chW(1)">&#8250;</button></div>';
-  var totM={},any=false;
+  var totM={}, any=false;
   dates.forEach(function(date,i){
-    var day=opg(date);if(!day.length)return;any=true;
+    var day=opg(date); if(!day.length)return; any=true;
     var bp={};
     day.forEach(function(o){
-      function addK(k,q){if(!bp[k])bp[k]=[];bp[k].push({o:o});totM[k]=(totM[k]||0)+q;}
-      if(o.prodotto) addK(o.prodotto,o.modo==="pz"?(o.pezzi||1):(o.qtaTorte||1));
-      if(o.torteExtra) o.torteExtra.forEach(function(t){addK(t.prodotto,t.modo==="pz"?(t.pezzi||1):(t.qtaTorte||1));});
-      if(o.salProdotto) addK(o.salProdotto,o.salModo==="pz"?(o.salQta||1):1);
-      if(o.salatiExtra) o.salatiExtra.forEach(function(s){addK(s.prodotto,s.modo==="pz"?(s.qta||1):1);});
+      function addKey(k,q){if(!bp[k])bp[k]=[];bp[k].push(o);totM[k]=(totM[k]||0)+q;}
+      if(o.prodotto) addKey(o.prodotto, o.qtaTorte||1);
+      if(o.salProdotto) addKey(o.salProdotto, o.salModo==="pz"?(o.salQta||1):1);
     });
     h+='<div class="pc"><div class="ph"><span class="pd">'+GIORNI[i]+' '+fd(date)+'</span><span class="pi2">'+day.length+' ordini</span></div>';
     Object.keys(bp).forEach(function(prod){
-      var items=bp[prod],tq=totM[prod];
+      var items=bp[prod], tq=items.reduce(function(s,o){return s+(o.prodotto===prod?(o.qtaTorte||1):(o.salModo==="pz"?(o.salQta||1):1));},0);
       h+='<div class="pit"><div class="pih"><span class="pn">'+xe(prod)+'</span><span class="pq">× '+tq+'</span></div>';
-      var seen={};
-      items.forEach(function(x){
-        var o=x.o,key=o.id+prod;if(seen[key])return;seen[key]=1;
-        var det=[],tot=calcTot(o);
-        if(o.prodotto===prod){var pw=o.modo==="pz"?(o.pezzi||1)+" pz":(o.modo==="kg"?(o.peso||"1kg"):(o.persone||8)+"p");det.push(pw);if(o.orario)det.push("⏰"+o.orario);if(o.farcitura)det.push("farc:"+o.farcitura);if(o.decorazione)det.push(o.decorazione);if(o.consegna)det.push("🚗");}
+      items.forEach(function(o){
+        var det=[];
+        if(o.prodotto===prod){var pw=o.modoKg?(o.peso||"1kg"):(o.persone||8)+"p";det.push(pw);if((o.qtaTorte||1)>1)det.push(o.qtaTorte+"t");}
         if(o.salProdotto===prod){det.push(o.salModo==="kg"?(o.salPeso||"1kg"):(o.salQta||1)+" pz");}
-        if(o.torteExtra) o.torteExtra.forEach(function(t){if(t.prodotto===prod)det.push(t.modo==="pz"?(t.pezzi||1)+" pz":(t.modo==="kg"?(t.peso||"1kg"):(t.persone||8)+"p"));});
-        if(o.salatiExtra) o.salatiExtra.forEach(function(s){if(s.prodotto===prod)det.push(s.modo==="pz"?(s.qta||1)+" pz":(s.peso||"1kg"));});
-        h+='<div class="pdt">— '+xe(o.cliente)+(det.length?' · <span>'+det.join(" · ")+'</span>':'')+(tot>0?' · <span>€'+tot.toFixed(2)+'</span>':'')+'</div>';
+        if(o.farcitura)det.push("farc: "+o.farcitura);
+        if(o.decorazione)det.push("dec: "+o.decorazione);
+        if(o.consegna)det.push("🚗");
+        var tot2=calcTot(o);
+        h+='<div class="pdt">— '+xe(o.cliente)+(det.length?' · <span>'+det.join(" · ")+'</span>':'')+(tot2>0?' · <span>€'+tot2.toFixed(2)+'</span>':'')+'</div>';
       });
       h+='</div>';
     });
     h+='</div>';
   });
-  if(!any) h+='<div style="text-align:center;padding:40px;color:#ccc;font-family:sans-serif">Nessun ordine</div>';
+  if(!any)h+='<div style="text-align:center;padding:40px;color:#ccc;font-family:sans-serif">Nessun ordine</div>';
   if(Object.keys(totM).length){
     var te=ordini.filter(function(o){return dates.indexOf(o.data)>=0;}).reduce(function(s,o){return s+calcTot(o);},0);
     h+='<div class="tc"><div class="th"><span>📦 Totale settimana'+(te>0?' · € '+te.toFixed(2):'')+'</span></div>';
@@ -406,347 +458,182 @@ function rP(){
   G("v1").innerHTML=h;
 }
 
-// STAMPA
-var TCOLORS={
-  "Afrodite":"#f9a8d4","Black Forest":"#7c3aed","Brownie":"#92400e","Caprese":"#fbbf24",
-  "Cestino Fagottini":"#f97316","Charlotte cioccolato":"#78350f","Charlotte limone":"#fef08a",
-  "Cheesecake":"#fde68a","Cream tart":"#fbcfe8","Crema al burro":"#fef3c7",
-  "Crostata marmellata":"#fca5a5","Crostata cioccolato":"#92400e","Crostata ricotta":"#e9d5ff",
-  "Crostata frutta":"#bbf7d0","Diplomatica":"#fde68a","Dolce castagne":"#d97706",
-  "Dolce arachidi/nocciole":"#d97706","Dolce Fagotti":"#c9a84c","Dolce Ilaria":"#f9a8d4",
-  "Kinder":"#fbbf24","Lemon tart":"#fef08a","Mandarinoir":"#fb923c",
-  "Marika":"#f472b6","Meringata cioccolato/fragole":"#fca5a5","Meringata frutti bosco":"#c4b5fd",
-  "Meringata limone/castagne":"#fef08a","Millefoglie classico":"#fde68a",
-  "Millefoglie frutti bosco":"#a78bfa","Millefoglie fragole":"#fca5a5",
-  "Mimosa":"#fef08a","Montblanc":"#d1d5db","Moretta":"#6b7280",
-  "Ohana":"#6ee7b7","Pasta zucchero":"#fbcfe8","Pastiera":"#bbf7d0",
-  "Pavlova":"#e9d5ff","Profitterole":"#78350f","Red Velvet":"#ef4444",
-  "Sacher":"#7c3aed","Saint Honorè":"#fde68a","Serendipity":"#f9a8d4",
-  "Settembrina":"#fb923c","Struffoli":"#fbbf24","Sveva":"#a78bfa",
-  "Tiramisù classico":"#93c5fd","Tiramisù fragole":"#fca5a5",
-  "Tre cioccolati":"#78350f","Tronchetto Natale":"#86efac",
-  "Ugly cake":"#d1d5db","Zuccotto":"#c4b5fd","Torta Gelato":"#bae6fd",
-  "Zuppa inglese":"#fca5a5"
-};
-function getTCol(nome){return TCOLORS[nome]||"#e5e7eb";}
-function colorName(nome){
-  var c=getTCol(nome);
-  return '<span style="background:'+c+';color:#1a1207;padding:2px 8px;border-radius:6px;font-weight:800">'+xe(nome)+'</span>';
-}
-
-function printDay(){
-  // Build day selector UI
-  var dates=wDates(wOff);
-  var options="";
-  dates.forEach(function(date,i){
-    var cnt=opg(date).length;
-    options+='<option value="'+date+'"'+(date===td()?' selected':'')+'>'+GIORNI[i]+' '+fd(date)+' ('+cnt+' ordini)</option>';
-  });
-
-  var w=window.open('','_blank','width=720,height=960');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">');
-  w.document.write('<title>Stampa Ordini</title>');
-  w.document.write('<style>');
-  w.document.write('*{box-sizing:border-box;margin:0;padding:0}');
-  w.document.write('body{font-family:Georgia,serif;background:#f5f5f5;color:#1a1207;padding:20px}');
-  w.document.write('.toolbar{background:#1a1207;color:#fff;padding:14px 18px;border-radius:10px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}');
-  w.document.write('.toolbar select{padding:8px 12px;border-radius:8px;border:none;font-size:14px;font-family:sans-serif;background:#fff;color:#1a1207;cursor:pointer}');
-  w.document.write('.toolbar button{padding:8px 16px;border-radius:8px;border:none;font-size:14px;font-weight:700;cursor:pointer}');
-  w.document.write('.btn-print{background:#c9a84c;color:#1a1207}');
-  w.document.write('.btn-close{background:#555;color:#fff}');
-  w.document.write('.header{border-bottom:3px solid #1a1207;padding-bottom:12px;margin-bottom:18px}');
-  w.document.write('.header h1{font-size:20px;font-weight:900}');
-  w.document.write('.header h2{font-size:15px;color:#c9a84c;font-weight:700;margin-top:3px}');
-  w.document.write('.header .meta{font-size:13px;color:#888;margin-top:3px}');
-  w.document.write('table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}');
-  w.document.write('thead tr{background:#1a1207}');
-  w.document.write('thead th{color:#c9a84c;padding:11px 14px;text-align:left;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase}');
-  w.document.write('thead th:last-child{text-align:right}');
-  w.document.write('tbody tr{border-bottom:2px solid #f0f0f0}');
-  w.document.write('tbody tr:last-child{border-bottom:none}');
-  w.document.write('tbody td{padding:12px 14px;vertical-align:top}');
-  w.document.write('.nome-cliente{font-size:16px;font-weight:800}');
-  w.document.write('.orario{font-size:14px;font-weight:700;color:#c9a84c;margin-top:2px}');
-  w.document.write('.tel{font-size:12px;color:#888;margin-top:2px}');
-  w.document.write('.cons{font-size:12px;color:#9a3412;font-weight:700;margin-top:2px}');
-  w.document.write('.prod-line{font-size:14px;line-height:2;margin-bottom:2px}');
-  w.document.write('.note{font-size:12px;color:#888;font-style:italic;margin-top:4px}');
-  w.document.write('.totale{font-size:17px;font-weight:900;white-space:nowrap}');
-  w.document.write('.footer{margin-top:16px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid #1a1207;padding-top:12px}');
-  w.document.write('.footer-tot{font-size:18px;font-weight:900}');
-  w.document.write('.footer-meta{font-size:12px;color:#888}');
-  w.document.write('@media print{.toolbar{display:none!important}body{background:#fff;padding:10px}thead tr{-webkit-print-color-adjust:exact;print-color-adjust:exact}span[style]{-webkit-print-color-adjust:exact;print-color-adjust:exact}}');
-  w.document.write('</style></head><body>');
-
-  // Toolbar
-  w.document.write('<div class="toolbar">');
-  w.document.write('<select id="day-sel" onchange="buildTable(this.value)">'+options+'</select>');
-  w.document.write('<button class="btn-print" onclick="window.print()">🖨️ Stampa</button>');
-  w.document.write('<button class="btn-close" onclick="window.close()">✕ Chiudi</button>');
-  w.document.write('</div>');
-  w.document.write('<div id="content"></div>');
-
-  // Inject data and build function
-  var ordiniJSON=JSON.stringify(ordini);
-  var giorniJSON=JSON.stringify(GIORNI);
-  var tcolJSON=JSON.stringify(TCOLORS);
-
-  w.document.write('<scr'+'ipt>');
-  w.document.write('var ordini='+ordiniJSON+';');
-  w.document.write('var GIORNI='+giorniJSON+';');
-  w.document.write('var TCOLORS='+tcolJSON+';');
-  w.document.write('function fd(iso){try{var a=iso.split("-");return a[2]+"/"+a[1];}catch(e){return iso;}}');
-  w.document.write('function fdf(iso){try{var a=iso.split("-");return a[2]+"/"+a[1]+"/"+a[0];}catch(e){return iso;}}');
-  w.document.write('function xe(s){return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}');
-  w.document.write('function p2kg(p){return p.endsWith("kg")?parseFloat(p):parseFloat(p)/1000;}');
-  w.document.write('function cKg(n,g){return n*g/1000;}');
-  w.document.write('function orMin(s){if(!s)return 9999;var m=s.match(/^(\\d{1,2}):(\\d{2})$/);if(m)return parseInt(m[1])*60+parseInt(m[2]);return 9999;}');
-  w.document.write('function getTCol(n){return TCOLORS[n]||"#e5e7eb";}');
-  w.document.write('function cn(n){var c=getTCol(n);return '<span style="background:'+c+';color:#1a1207;padding:2px 8px;border-radius:6px;font-weight:800;display:inline-block">'+xe(n)+'</span>';}');
-  w.document.write('function calcTot(o){');
-  w.document.write('  var tot=0;');
-  w.document.write('  function addT(t){var pk=parseFloat(t.prezzoKg)||0;var kg=t.modo==="kg"?p2kg(t.peso||"1kg")*(t.qtaTorte||1):t.modo==="pers"?cKg(t.persone||8,t.grammi||150)*(t.qtaTorte||1):0;tot+=pk*kg;}');
-  w.document.write('  if(o.prodotto)addT({prodotto:o.prodotto,modo:o.modo||(o.modoKg===false?"pers":"kg"),peso:o.peso,persone:o.persone,grammi:o.grammi,qtaTorte:o.qtaTorte,prezzoKg:o.prezzoKg});');
-  w.document.write('  if(o.torteExtra)o.torteExtra.forEach(addT);');
-  w.document.write('  if(o.consegna)tot+=10;');
-  w.document.write('  return tot;');
-  w.document.write('}');
-  w.document.write('function buildTable(date){');
-  w.document.write('  var day=ordini.filter(function(o){return o.data===date;}).sort(function(a,b){var oa=orMin(a.orario),ob=orMin(b.orario);return oa!==ob?oa-ob:(a.cliente||"").localeCompare(b.cliente||"");});');
-  w.document.write('  var dates=[];for(var d=new Date(date.replace(/-/g,"/")),wd=d.getDay(),di=d.getDate()-wd+(wd===0?-6:1),mo=new Date(d.setDate(di)),i=0;i<7;i++){var dd=new Date(mo);dd.setDate(mo.getDate()+i);dates.push(dd.toISOString().split("T")[0]);}');
-  w.document.write('  var gi=dates.indexOf(date);');
-  w.document.write('  var nome=gi>=0?GIORNI[gi]:"";');
-  w.document.write('  var totG=day.reduce(function(s,o){return s+calcTot(o);},0);');
-  w.document.write('  var rows="";');
-  w.document.write('  day.forEach(function(o){');
-  w.document.write('    var lines=[],tot=calcTot(o);');
-  w.document.write('    if(o.prodotto){var pw=o.modo==="pz"?(o.pezzi||1)+" pz":(o.modo==="kg"?(o.peso||"1kg"):(o.persone||8)+"p");var l=cn(o.prodotto)+" · "+pw;if(o.farcitura)l+=" | "+xe(o.farcitura);if(o.decorazione)l+=' | <em>'+xe(o.decorazione)+"</em>";lines.push(l);}');
-  w.document.write('    if(o.torteExtra)o.torteExtra.forEach(function(t){var pw=t.modo==="pz"?(t.pezzi||1)+" pz":(t.modo==="kg"?(t.peso||"1kg"):(t.persone||8)+"p");var l=cn(t.prodotto)+" · "+pw;if(t.farcitura)l+=" | "+xe(t.farcitura);if(t.decorazione)l+=' | <em>'+xe(t.decorazione)+"</em>";lines.push(l);});');
-  w.document.write('    if(o.salProdotto)lines.push("🥗 <strong>"+xe(o.salProdotto)+"</strong> · "+(o.salModo==="kg"?(o.salPeso||"1kg"):(o.salQta||1)+" pz"));');
-  w.document.write('    if(o.salatiExtra)o.salatiExtra.forEach(function(s){lines.push("🥗 <strong>"+xe(s.prodotto)+"</strong> · "+(s.modo==="kg"?(s.peso||"1kg"):(s.qta||1)+" pz"));});');
-  w.document.write('    rows+='<tr><td><div class="nome-cliente">'+xe(o.cliente)+'</div>';');
-  w.document.write('    if(o.orario)rows+='<div class="orario">⏰ '+o.orario+'</div>';');
-  w.document.write('    if(o.telefono)rows+='<div class="tel">📞 '+xe(o.telefono)+'</div>';');
-  w.document.write('    if(o.consegna)rows+='<div class="cons">🚗 CONSEGNA</div>';');
-  w.document.write('    rows+='</td><td>'+lines.map(function(l){return '<div class="prod-line">'+l+"</div>";}).join("")+(o.note?'<div class="note">📝 '+xe(o.note)+"</div>":"")+'</td>';');
-  w.document.write('    rows+='<td class="totale">'+( tot>0?"€ "+tot.toFixed(2):"—")+'</td></tr>';');
-  w.document.write('  });');
-  w.document.write('  if(!rows)rows='<tr><td colspan="3" style="padding:20px;text-align:center;color:#aaa">Nessun ordine</td></tr>';');
-  w.document.write('  var html='<div class="header"><h1>Pasticceria Artigianale Fagotti</h1><h2>'+nome+" "+fdf(date)+'</h2><div class="meta">'+day.length+' ordini</div></div>';');
-  w.document.write('  html+='<table><thead><tr><th>Cliente</th><th>Prodotto</th><th style="text-align:right">Totale</th></tr></thead><tbody>'+rows+'</tbody></table>';');
-  w.document.write('  html+='<div class="footer"><div class="footer-meta">Stampato il '+fdf(new Date().toISOString().split("T")[0])+'</div>';');
-  w.document.write('  if(totG>0)html+='<div class="footer-tot">Totale: € '+totG.toFixed(2)+'</div>';');
-  w.document.write('  html+="</div>";');
-  w.document.write('  document.getElementById("content").innerHTML=html;');
-  w.document.write('}');
-  w.document.write('buildTable(document.getElementById("day-sel").value);');
-  w.document.write('<\/scr'+'ipt>');
-  w.document.write('</body></html>');
-  w.document.close();
-}
-
-
+// ── FORM ──
 function togTipo(t){
-  if(t==="t"){fHasT=!fHasT;if(fHasT&&TI.length===0){TI=[newT()];rTL();}if(!fHasT){TI=[];}}
-  else{fHasS=!fHasS;if(fHasS&&SI.length===0){SI=[newS()];rSL();}if(!fHasS){SI=[];}}
+  if(t==="t") fHasT=!fHasT;
+  else fHasS=!fHasS;
   G("tipo-t").className="tipo-btn"+(fHasT?" on-t":"");
   G("tipo-s").className="tipo-btn"+(fHasS?" on-s":"");
   G("sec-t").style.display=fHasT?"block":"none";
   G("sec-s").style.display=fHasS?"block":"none";
   ub();
 }
-function setConsegna(v){fConsegna=v;G("btn-ritiro").classList.toggle("on",!v);G("btn-cons").classList.toggle("on",v);}
-
-// TORTE
-function addTorta(){TI.push(newT());rTL();}
-function removeTorta(i){TI.splice(i,1);rTL();ub();}
-
-function rTL(){
-  var box=G("torte-list");if(!box)return;
-  var html="";
-  TI.forEach(function(t,i){
-    var lk=LISTINO[t.prodotto]||"";
-    var pkv=t.prezzoKg!==""?t.prezzoKg:lk;
-    var kg=t.modo==="kg"?p2kg(t.peso||"1kg")*(t.qtaTorte||1):t.modo==="pers"?cKg(t.persone||8,t.grammi||150)*(t.qtaTorte||1):0;
-    var prev=pkv&&kg?(parseFloat(pkv)*kg).toFixed(2):"";
-    html+='<div class="ibox t">';
-    if(TI.length>1) html+='<button class="idel" onclick="removeTorta('+i+')">✕</button><div class="inum">Torta '+(i+1)+'</div>';
-    // prodotto — oninput solo salva, onchange triggera aggiornamento listino
-    html+='<div style="margin-bottom:8px"><label class="fl">Prodotto</label>';
-    html+='<input class="fi" type="text" list="dl-t" value="'+xe(t.prodotto)+'" placeholder="Es: Tiramisù, Sacher..." autocomplete="off"';
-    html+=' oninput="TI['+i+'].prodotto=this.value"';
-    html+=' onchange="tChgProd('+i+',this.value)"></div>';
-    // n torte
-    html+='<div style="margin-bottom:8px"><label class="fl">N&deg; torte</label><div class="row2">';
-    html+='<button class="qb" onclick="tAdj('+i+',\'qt\',-1)">&#8722;</button>';
-    html+='<input type="number" class="qinp" min="1" value="'+(t.qtaTorte||1)+'"';
-    html+=' oninput="TI['+i+'].qtaTorte=Math.max(1,parseInt(this.value)||1)">';
-    html+='<button class="qb" onclick="tAdj('+i+',\'qt\',1)">+</button>';
-    html+='<span style="font-family:sans-serif;font-size:13px;color:#888">'+(( t.qtaTorte||1)===1?"torta":"torte")+'</span></div></div>';
-    // modo
-    html+='<div style="margin-bottom:8px"><label class="fl">Formato</label>';
-    html+='<div class="tog" style="margin-bottom:8px">';
-    html+='<button class="tb'+(t.modo==="kg"?" on":"")+'" onclick="tModo('+i+',\'kg\')">📏 Kg</button>';
-    html+='<button class="tb'+(t.modo==="pz"?" on":"")+'" onclick="tModo('+i+',\'pz\')">🔢 Pezzi</button>';
-    html+='<button class="tb'+(t.modo==="pers"?" on":"")+'" onclick="tModo('+i+',\'pers\')">👥 Persone</button>';
-    html+='</div>';
-    if(t.modo==="kg"){
-      html+='<div class="chips">';
-      ["500g","1kg","1.5kg","2kg","2.5kg","3kg","4kg","5kg"].forEach(function(p){html+='<button class="ch'+(t.peso===p?" on":"")+'" onclick="tPeso('+i+',\''+p+'\')">'+p+'</button>';});
-      html+='</div>';
-    } else if(t.modo==="pz"){
-      html+='<div class="row2">';
-      html+='<button class="qb" onclick="tAdj('+i+',\'pz\',-1)">&#8722;</button>';
-      html+='<input type="number" class="qinp" min="1" value="'+(t.pezzi||1)+'" oninput="TI['+i+'].pezzi=Math.max(1,parseInt(this.value)||1)">';
-      html+='<button class="qb" onclick="tAdj('+i+',\'pz\',1)">+</button>';
-      html+='<span style="font-family:sans-serif;font-size:13px;color:#888">pz</span></div>';
-    } else {
-      html+='<div class="row2" style="margin-bottom:8px">';
-      html+='<button class="qb" onclick="tAdj('+i+',\'pe\',-1,2)">&#8722;</button>';
-      html+='<input type="number" class="qinp" min="2" value="'+(t.persone||8)+'" oninput="TI['+i+'].persone=Math.max(2,parseInt(this.value)||8)">';
-      html+='<button class="qb" onclick="tAdj('+i+',\'pe\',1)">+</button></div>';
-      html+='<div style="font-family:sans-serif;font-size:13px;color:#666;margin-bottom:4px">Porzione: '+(t.grammi||150)+'g/persona</div>';
-      html+='<input type="range" style="width:100%;accent-color:var(--oro);margin:4px 0" min="120" max="170" step="5" value="'+(t.grammi||150)+'" oninput="TI['+i+'].grammi=parseInt(this.value);rTL()">';
-      html+='<div style="display:flex;justify-content:space-between;font-family:sans-serif;font-size:11px;color:#bbb"><span>120g</span><span>150g</span><span>170g</span></div>';
-      html+='<div class="kgbox">'+cKg(t.persone||8,t.grammi||150).toFixed(2)+' kg × '+(t.qtaTorte||1)+' = <strong>~'+(cKg(t.persone||8,t.grammi||150)*(t.qtaTorte||1)).toFixed(2)+' kg</strong></div>';
-    }
-    html+='</div>';
-    // prezzo
-    html+='<div style="margin-bottom:8px"><label class="fl">Prezzo &euro;/kg'+(lk?' <span style="font-weight:400;color:#aaa">(listino: €'+lk+'/kg)</span>':'')+' </label>';
-    html+='<input class="fi" type="number" step="0.5" value="'+xe(String(pkv))+'" placeholder="&euro;/kg" oninput="TI['+i+'].prezzoKg=this.value">';
-    if(prev) html+='<div class="prebox" style="margin-top:6px"><div style="font-family:sans-serif;font-size:11px;color:#0369a1;text-transform:uppercase;letter-spacing:1px">Preventivo</div><div class="pretot">€ '+prev+'</div><div class="predet">'+kg.toFixed(3)+' kg × €'+pkv+'/kg</div></div>';
-    html+='</div>';
-    // farcitura / deco
-    html+='<div style="margin-bottom:8px"><label class="fl">Farcitura</label><input class="fi" type="text" value="'+xe(t.farcitura||"")+'" placeholder="Es: fragole, pistacchio..." oninput="TI['+i+'].farcitura=this.value"></div>';
-    html+='<div><label class="fl">Decorazione / Scritta</label><input class="fi" type="text" value="'+xe(t.decorazione||"")+'" placeholder="Es: Buon compleanno Marco..." oninput="TI['+i+'].decorazione=this.value"></div>';
-    html+='</div>';
-  });
-  box.innerHTML=html;
+function setConsegna(v){
+  fConsegna=v;
+  G("btn-ritiro").classList.toggle("on",!v);
+  G("btn-cons").classList.toggle("on",v);
 }
-
-function tChgProd(i,v){TI[i].prodotto=v;var lk=LISTINO[v]||"";if(lk)TI[i].prezzoKg=lk;rTL();ub();}
-function tModo(i,v){TI[i].modo=v;rTL();}
-function tPeso(i,p){TI[i].peso=p;rTL();}
-function tAdj(i,t,d,mn){
+function onTChange(){
+  var p=G("fprod").value.trim();
+  var lk=LISTINO[p]||"";
+  G("lbl-lk").textContent=lk?"(listino: €"+lk+"/kg)":"";
+  if(lk&&!G("fpk").value)G("fpk").value=lk;
+  updP(); ub();
+}
+function setModo(v){
+  fModoKg=v;
+  G("btn-kg").classList.toggle("on",v); G("btn-pers").classList.toggle("on",!v);
+  G("sec-kg").style.display=v?"block":"none"; G("sec-pers").style.display=!v?"block":"none";
+  updP();
+}
+function setPeso(btn,p){
+  fPeso=p;
+  document.querySelectorAll("#chips-peso .ch").forEach(function(c){c.classList.toggle("on",c.textContent===p);});
+  updP();
+}
+function setN(t,val){
+  var n=parseInt(val)||1;
+  if(t==="qt"){fQtT=Math.max(1,n);G("lbl-t").textContent=fQtT===1?"torta":"torte";updKgB();updP();}
+  if(t==="pe"){fPersone=Math.max(2,n);updKgB();updP();}
+  if(t==="sq"){fSalQta=Math.max(1,n);updSPz();}
+}
+function adjN(t,d,mn){
   mn=mn||1;
-  if(t==="qt") TI[i].qtaTorte=Math.max(mn,(TI[i].qtaTorte||1)+d);
-  if(t==="pe") TI[i].persone=Math.max(mn,(TI[i].persone||8)+d);
-  if(t==="pz") TI[i].pezzi=Math.max(mn,(TI[i].pezzi||1)+d);
-  rTL();
+  if(t==="qt"){fQtT=Math.max(mn,fQtT+d);var e=G("disp-qt");if(e)e.value=fQtT;G("lbl-t").textContent=fQtT===1?"torta":"torte";updKgB();updP();}
+  if(t==="pe"){fPersone=Math.max(mn,fPersone+d);var e2=G("disp-pe");if(e2)e2.value=fPersone;updKgB();updP();}
+  if(t==="sq"){fSalQta=Math.max(mn,fSalQta+d);var e3=G("disp-sq");if(e3)e3.value=fSalQta;updSPz();}
 }
-
-// SALATI
-function addSalato(){SI.push(newS());rSL();}
-function removeSalato(i){SI.splice(i,1);rSL();ub();}
-
-function rSL(){
-  var box=G("salati-list");if(!box)return;
-  var html="";
-  SI.forEach(function(s,i){
-    var isKg=SAL_KG.indexOf(s.prodotto)>=0;
-    html+='<div class="ibox s">';
-    if(SI.length>1) html+='<button class="idel" onclick="removeSalato('+i+')">✕</button><div class="inum">Salato '+(i+1)+'</div>';
-    html+='<div style="margin-bottom:8px"><label class="fl">Prodotto</label>';
-    html+='<input class="fi" type="text" list="dl-s" value="'+xe(s.prodotto)+'" placeholder="Es: Tramezzini, Pizzette..." autocomplete="off"';
-    html+=' oninput="SI['+i+'].prodotto=this.value"';
-    html+=' onchange="sChgProd('+i+',this.value)"></div>';
-    if(s.prodotto){
-      if(isKg){
-        html+='<div><label class="fl">Peso</label><div class="chips">';
-        ["0.5kg","1kg","1.5kg","2kg","3kg","4kg","5kg"].forEach(function(p){html+='<button class="ch'+(s.peso===p?" on":"")+'" onclick="sPeso('+i+',\''+p+'\')">'+p+'</button>';});
-        html+='</div></div>';
-      } else {
-        html+='<div><label class="fl">Quantit&agrave; (pz)</label><div class="row2">';
-        html+='<button class="qb" onclick="sAdj('+i+',-1)">&#8722;</button>';
-        html+='<input type="number" class="qinp" min="1" value="'+(s.qta||1)+'" oninput="SI['+i+'].qta=Math.max(1,parseInt(this.value)||1)">';
-        html+='<button class="qb" onclick="sAdj('+i+',1)">+</button>';
-        html+='<span style="font-family:sans-serif;font-size:13px;color:#888">pz</span></div></div>';
-      }
-    }
-    html+='</div>';
-  });
-  box.innerHTML=html;
+function updG(v){fGrammi=parseInt(v);G("lbl-g").textContent=fGrammi;updKgB();updP();}
+function updKgB(){
+  var kg=cKg(fPersone,fGrammi),qt=fQtT;
+  G("kgbox").innerHTML=qt===1?(fPersone+" pers × "+fGrammi+"g = <strong>~"+kg.toFixed(2)+" kg</strong>"):(fPersone+" pers × "+fGrammi+"g × "+qt+" torte = <strong>~"+(kg*qt).toFixed(2)+" kg tot</strong>");
 }
-
-function sChgProd(i,v){SI[i].prodotto=v;SI[i].modo=SAL_KG.indexOf(v)>=0?"kg":"pz";rSL();ub();}
-function sPeso(i,p){SI[i].peso=p;rSL();}
-function sAdj(i,d){SI[i].qta=Math.max(1,(SI[i].qta||1)+d);rSL();}
-
-// UB
+function updP(){
+  var p=G("fprod").value.trim(); if(!p){G("pbox").style.display="none";return;}
+  var pk=parseFloat(G("fpk").value)||LISTINO[p]||0; if(!pk){G("pbox").style.display="none";return;}
+  var kg=fModoKg?p2kg(fPeso)*fQtT:cKg(fPersone,fGrammi)*fQtT; if(!kg){G("pbox").style.display="none";return;}
+  G("pbox").style.display="block"; G("ptot").textContent="€ "+(pk*kg).toFixed(2);
+  G("pdet").textContent=kg.toFixed(3)+" kg × €"+pk+"/kg";
+}
+function onSChange(){
+  var p=G("fsprod").value.trim();
+  var isKg=SAL_KG.indexOf(p)>=0, isPz=SAL_PZ.indexOf(p)>=0;
+  G("sec-skg").style.display=isKg?"flex":"none";
+  G("sec-spz").style.display=isPz?"flex":"none";
+  if(isKg){var lk=LSK[p]||"";G("lbl-slk").textContent=lk?"(listino: €"+lk+"/kg)":"";if(lk&&!G("fspk").value)G("fspk").value=lk;updSP();}
+  if(isPz){var lp=LSP[p]||"";G("lbl-spz").textContent=lp?"(listino: €"+lp+"/pz)":"";if(lp&&!G("fsppz").value)G("fsppz").value=lp;updSPz();}
+  ub();
+}
+function setSP(btn,p){
+  fSalPeso=p;
+  document.querySelectorAll("#chips-s .ch").forEach(function(c){c.classList.toggle("on",c.textContent===p);});
+  updSP();
+}
+function updSP(){
+  var p=G("fsprod").value.trim();
+  var pk=parseFloat(G("fspk").value)||LSK[p]||0; if(!pk){G("spbox").style.display="none";return;}
+  var kg=p2kg(fSalPeso);
+  G("spbox").style.display="block"; G("sptot").textContent="€ "+(pk*kg).toFixed(2);
+  G("spdet").textContent=kg.toFixed(2)+" kg × €"+pk+"/kg";
+}
+function updSPz(){
+  var p=G("fsprod").value.trim();
+  var ppz=parseFloat(G("fsppz")&&G("fsppz").value)||LSP[p]||0; if(!ppz){G("spzbox").style.display="none";return;}
+  var tot=ppz*fSalQta;
+  G("spzbox").style.display="block"; G("spztot").textContent="€ "+tot.toFixed(2);
+  G("spzdet").textContent=fSalQta+" pz × €"+ppz+"/pz";
+}
 function ub(){
-  var cl=G("fc").value.trim(),ok=false;
-  if(fHasT&&TI.some(function(t){return t.prodotto.trim();})) ok=true;
-  if(fHasS&&SI.some(function(s){return s.prodotto.trim();})) ok=true;
+  var cl=G("fc").value.trim(), ok=false;
+  if(fHasT&&G("fprod").value.trim()) ok=true;
+  if(fHasS&&G("fsprod").value.trim()) ok=true;
   G("sbtn").disabled=!(cl&&ok);
 }
-
-// FOTO
-function updFoto(){var v=G("fnref").value.trim();var p=G("foto-prev"),l=G("foto-lnk");if(v&&v.startsWith("http")){p.style.display="block";l.href=v;}else{p.style.display="none";}}
-
-// SUBMIT
 function doSub(){
-  var cl=G("fc").value.trim();if(!cl)return;
+  var cl=G("fc").value.trim(); if(!cl)return;
   var id=editId||String(Date.now());
-  var o={id:id,cliente:cl,telefono:G("ftel").value,data:G("fdata").value,orario:G("forario").value||null,consegna:fConsegna,noteRif:G("fnref").value||null,note:G("fnote").value||null};
-  if(fHasT&&TI.length>0){
-    var vt=TI.filter(function(t){return t.prodotto.trim();});
-    if(vt.length>0){
-      var t0=vt[0],pk0=parseFloat(t0.prezzoKg)||LISTINO[t0.prodotto]||0;
-      Object.assign(o,{prodotto:t0.prodotto,modo:t0.modo,peso:t0.peso,persone:t0.persone,grammi:t0.grammi,qtaTorte:t0.qtaTorte,pezzi:t0.pezzi,prezzoKg:pk0,farcitura:t0.farcitura||null,decorazione:t0.decorazione||null});
-      if(vt.length>1) o.torteExtra=vt.slice(1).map(function(t){return{prodotto:t.prodotto,modo:t.modo,peso:t.peso,persone:t.persone,grammi:t.grammi,qtaTorte:t.qtaTorte,pezzi:t.pezzi,prezzoKg:parseFloat(t.prezzoKg)||LISTINO[t.prodotto]||0,farcitura:t.farcitura||null,decorazione:t.decorazione||null};});
-    }
+  var o={id:id,cliente:cl,telefono:G("ftel").value,data:G("fdata").value,consegna:fConsegna,noteRif:G("fnref").value,note:G("fnote").value};
+  if(fHasT&&G("fprod").value.trim()){
+    var p=G("fprod").value.trim();
+    var pk=parseFloat(G("fpk").value)||LISTINO[p]||0;
+    o.prodotto=p; o.modoKg=fModoKg; o.peso=fPeso; o.persone=fPersone; o.grammi=fGrammi; o.qtaTorte=fQtT; o.prezzoKg=pk; o.farcitura=G("ffar").value; o.decorazione=G("fdec").value;
   }
-  if(fHasS&&SI.length>0){
-    var vs=SI.filter(function(s){return s.prodotto.trim();});
-    if(vs.length>0){
-      var s0=vs[0],isK0=SAL_KG.indexOf(s0.prodotto)>=0;
-      Object.assign(o,{salProdotto:s0.prodotto,salModo:isK0?"kg":"pz",salPeso:s0.peso||"1kg",salQta:s0.qta||1});
-      if(vs.length>1) o.salatiExtra=vs.slice(1).map(function(s){var isK=SAL_KG.indexOf(s.prodotto)>=0;return{prodotto:s.prodotto,modo:isK?"kg":"pz",peso:s.peso||"1kg",qta:s.qta||1};});
-    }
+  if(fHasS&&G("fsprod").value.trim()){
+    var sp=G("fsprod").value.trim();
+    var isKg=SAL_KG.indexOf(sp)>=0;
+    o.salProdotto=sp; o.salModo=isKg?"kg":"pz";
+    o.salPeso=fSalPeso; o.salQta=fSalQta;
+    o.salPrezzoKg=isKg?(parseFloat(G("fspk").value)||LSK[sp]||0):0;
+    o.salPrezzoPz=!isKg?(parseFloat(G("fsppz")&&G("fsppz").value)||LSP[sp]||0):0;
   }
-  var btn=G("sbtn");btn.disabled=true;btn.textContent="Salvataggio...";
+  var btn=G("sbtn"); btn.disabled=true; btn.textContent="Salvataggio...";
   saveO(o).then(function(){resetForm();goAgenda();}).catch(function(e){alert("Errore: "+e.message);btn.disabled=false;btn.textContent=editId?"✓ Salva modifiche":"✓ Aggiungi ordine";});
 }
-
-// DELETE / EDIT
-function doDel(id){if(!confirm("Eliminare questo ordine?"))return;delO(id);}
+function doDel(id){
+  if(!confirm("Eliminare questo ordine?"))return;
+  delO(id);
+}
 function doEdit(id){
-  var o=ordini.filter(function(x){return String(x.id)===String(id);})[0];if(!o)return;
+  var o=ordini.filter(function(x){return String(x.id)===String(id);})[0];
+  if(!o)return;
   editId=String(o.id);
-  G("fc").value=o.cliente||"";G("ftel").value=o.telefono||"";G("fdata").value=o.data||td();
-  G("forario").value=o.orario||"";G("fnref").value=o.noteRif||"";G("fnote").value=o.note||"";
-  fConsegna=!!o.consegna;G("btn-ritiro").classList.toggle("on",!fConsegna);G("btn-cons").classList.toggle("on",fConsegna);
-  fHasT=false;fHasS=false;TI=[];SI=[];
+  G("fc").value=o.cliente||""; G("ftel").value=o.telefono||"";
+  G("fdata").value=o.data||td(); G("fnref").value=o.noteRif||""; G("fnote").value=o.note||"";
+  fConsegna=!!o.consegna;
+  G("btn-ritiro").classList.toggle("on",!fConsegna); G("btn-cons").classList.toggle("on",fConsegna);
+  fHasT=false; fHasS=false;
   if(o.prodotto){
-    fHasT=true;
-    TI.push({prodotto:o.prodotto,modo:o.modo||(o.modoKg===false?"pers":"kg"),peso:o.peso||"1kg",persone:o.persone||8,grammi:o.grammi||150,qtaTorte:o.qtaTorte||1,pezzi:o.pezzi||1,prezzoKg:o.prezzoKg||LISTINO[o.prodotto]||"",farcitura:o.farcitura||"",decorazione:o.decorazione||""});
-    if(o.torteExtra) o.torteExtra.forEach(function(t){TI.push({prodotto:t.prodotto,modo:t.modo||"kg",peso:t.peso||"1kg",persone:t.persone||8,grammi:t.grammi||150,qtaTorte:t.qtaTorte||1,pezzi:t.pezzi||1,prezzoKg:t.prezzoKg||LISTINO[t.prodotto]||"",farcitura:t.farcitura||"",decorazione:t.decorazione||""});});
-    rTL();
+    fHasT=true; fModoKg=o.modoKg!==false; fPeso=o.peso||"1kg"; fPersone=o.persone||8; fGrammi=o.grammi||150; fQtT=o.qtaTorte||1;
+    G("fprod").value=o.prodotto; G("fpk").value=o.prezzoKg||LISTINO[o.prodotto]||"";
+    G("ffar").value=o.farcitura||""; G("fdec").value=o.decorazione||"";
+    var eq=G("disp-qt");if(eq)eq.value=fQtT; var ep=G("disp-pe");if(ep)ep.value=fPersone;
+    G("sl-g").value=fGrammi; G("lbl-g").textContent=fGrammi;
+    setModo(fModoKg);
+    document.querySelectorAll("#chips-peso .ch").forEach(function(c){c.classList.toggle("on",c.textContent===fPeso);});
+    G("lbl-t").textContent=fQtT===1?"torta":"torte";
+    updKgB(); updP();
   }
   if(o.salProdotto){
-    fHasS=true;
-    SI.push({prodotto:o.salProdotto,modo:o.salModo||"pz",peso:o.salPeso||"1kg",qta:o.salQta||1});
-    if(o.salatiExtra) o.salatiExtra.forEach(function(s){SI.push({prodotto:s.prodotto,modo:s.modo||"pz",peso:s.peso||"1kg",qta:s.qta||1});});
-    rSL();
+    fHasS=true; fSalPeso=o.salPeso||"1kg"; fSalQta=o.salQta||1;
+    G("fsprod").value=o.salProdotto;
+    if(G("fspk"))G("fspk").value=o.salPrezzoKg||"";
+    if(G("fsppz"))G("fsppz").value=o.salPrezzoPz||"";
+    var es=G("disp-sq");if(es)es.value=fSalQta;
+    document.querySelectorAll("#chips-s .ch").forEach(function(c){c.classList.toggle("on",c.textContent===fSalPeso);});
+    onSChange();
   }
-  G("tipo-t").className="tipo-btn"+(fHasT?" on-t":"");G("tipo-s").className="tipo-btn"+(fHasS?" on-s":"");
-  G("sec-t").style.display=fHasT?"block":"none";G("sec-s").style.display=fHasS?"block":"none";
-  updFoto();
-  G("sbtn").disabled=false;G("sbtn").textContent="✓ Salva modifiche";
-  G("cbtn").style.display="block";G("ftitle").textContent="MODIFICA ORDINE";
-  G("t2").textContent="✏️ Modifica";goTab(2);
+  G("tipo-t").className="tipo-btn"+(fHasT?" on-t":"");
+  G("tipo-s").className="tipo-btn"+(fHasS?" on-s":"");
+  G("sec-t").style.display=fHasT?"block":"none";
+  G("sec-s").style.display=fHasS?"block":"none";
+  G("sbtn").disabled=false; G("sbtn").textContent="✓ Salva modifiche";
+  G("cbtn").style.display="block"; G("ftitle").textContent="MODIFICA ORDINE";
+  G("t2").textContent="✏️ Modifica"; goTab(2);
 }
-
-// RESET
 function resetForm(){
-  G("fc").value="";G("ftel").value="";G("fdata").value=td();G("forario").value="";G("fnref").value="";G("fnote").value="";
-  fConsegna=false;fHasT=false;fHasS=false;TI=[];SI=[];
-  G("btn-ritiro").classList.add("on");G("btn-cons").classList.remove("on");
-  G("tipo-t").className="tipo-btn";G("tipo-s").className="tipo-btn";
-  G("sec-t").style.display="none";G("sec-s").style.display="none";
-  G("foto-prev").style.display="none";
-  G("sbtn").disabled=true;G("sbtn").textContent="✓ Aggiungi ordine";
-  G("cbtn").style.display="none";G("ftitle").textContent="NUOVO ORDINE";editId=null;
+  G("fc").value=""; G("ftel").value=""; G("fdata").value=td();
+  G("fnref").value=""; G("fnote").value="";
+  fConsegna=false; fHasT=false; fHasS=false;
+  fModoKg=true; fPeso="1kg"; fPersone=8; fGrammi=150; fQtT=1; fSalPeso="1kg"; fSalQta=1;
+  G("btn-ritiro").classList.add("on"); G("btn-cons").classList.remove("on");
+  G("tipo-t").className="tipo-btn"; G("tipo-s").className="tipo-btn";
+  G("sec-t").style.display="none"; G("sec-s").style.display="none";
+  G("sec-skg").style.display="none"; G("sec-spz").style.display="none";
+  G("pbox").style.display="none"; G("spbox").style.display="none"; G("spzbox").style.display="none";
+  try{
+    G("fprod").value=""; G("fpk").value=""; G("ffar").value=""; G("fdec").value="";
+    G("fsprod").value=""; G("fspk").value=""; if(G("fsppz"))G("fsppz").value="";
+    var eq=G("disp-qt");if(eq)eq.value=1; var ep=G("disp-pe");if(ep)ep.value=8; var es=G("disp-sq");if(es)es.value=1;
+    document.querySelectorAll("#chips-peso .ch").forEach(function(c){c.classList.toggle("on",c.textContent==="1kg");});
+    document.querySelectorAll("#chips-s .ch").forEach(function(c){c.classList.toggle("on",c.textContent==="1kg");});
+    G("btn-kg").classList.add("on"); G("btn-pers").classList.remove("on");
+    G("sec-kg").style.display="block"; G("sec-pers").style.display="none";
+    G("lbl-t").textContent="torta"; G("lbl-g").textContent="150"; G("sl-g").value=150;
+    G("kgbox").innerHTML="8 pers × 150g = <strong>~1.20 kg</strong>";
+    G("lbl-lk").textContent=""; G("lbl-slk").textContent=""; G("lbl-spz").textContent="";
+  }catch(err){}
+  G("sbtn").disabled=true; G("sbtn").textContent="✓ Aggiungi ordine";
+  G("cbtn").style.display="none"; G("ftitle").textContent="NUOVO ORDINE"; editId=null;
 }
 </script>
 </body>
