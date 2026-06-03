@@ -439,111 +439,106 @@ function colorName(nome){
 }
 
 function printDay(){
-  // Build day selector UI
   var dates=wDates(wOff);
+  var TCOLORS={
+  "Afrodite":"#f9a8d4","Black Forest":"#7c3aed","Brownie":"#92400e","Caprese":"#fbbf24",
+  "Cestino Fagottini":"#f97316","Charlotte cioccolato":"#a16207","Charlotte limone":"#fef08a",
+  "Cheesecake":"#fde68a","Cream tart":"#fbcfe8","Crema al burro":"#fef3c7",
+  "Crostata marmellata":"#fca5a5","Crostata cioccolato":"#92400e","Crostata ricotta":"#e9d5ff",
+  "Crostata frutta":"#bbf7d0","Diplomatica":"#fde68a","Dolce castagne":"#d97706",
+  "Dolce arachidi/nocciole":"#d97706","Dolce Fagotti":"#c9a84c","Dolce Ilaria":"#f9a8d4",
+  "Kinder":"#fbbf24","Lemon tart":"#fef08a","Mandarinoir":"#fb923c","Marika":"#f472b6",
+  "Meringata cioccolato/fragole":"#fca5a5","Meringata frutti bosco":"#c4b5fd",
+  "Meringata limone/castagne":"#fef08a","Millefoglie classico":"#fde68a",
+  "Millefoglie frutti bosco":"#a78bfa","Millefoglie fragole":"#fca5a5",
+  "Mimosa":"#fef08a","Montblanc":"#d1d5db","Moretta":"#78716c","Ohana":"#6ee7b7",
+  "Pasta zucchero":"#fbcfe8","Pastiera":"#bbf7d0","Pavlova":"#e9d5ff",
+  "Profitterole":"#78350f","Red Velvet":"#ef4444","Sacher":"#7c3aed",
+  "Saint Honorè":"#fde68a","Serendipity":"#f9a8d4","Settembrina":"#fb923c",
+  "Struffoli":"#fbbf24","Sveva":"#a78bfa","Tiramisù classico":"#93c5fd",
+  "Tiramisù fragole":"#fca5a5","Tre cioccolati":"#78350f","Tronchetto Natale":"#86efac",
+  "Ugly cake":"#d1d5db","Zuccotto":"#c4b5fd","Torta Gelato":"#bae6fd","Zuppa inglese":"#fca5a5"
+};
+  function cn(nome){var c=TCOLORS[nome]||"#e5e7eb";return '<span style="background:'+c+';color:#1a1207;padding:1px 7px;border-radius:5px;font-weight:800">'+xe(nome)+'</span>';}
+  function buildRows(date){
+    var day=opg(date),rows="";
+    day.forEach(function(o){
+      var lines=[],tot=calcTot(o);
+      if(o.prodotto){var pw=o.modo==="pz"?(o.pezzi||1)+" pz":(o.modo==="kg"?(o.peso||"1kg"):(o.persone||8)+"p");var l=cn(o.prodotto)+" · "+pw;if(o.farcitura)l+=" | "+xe(o.farcitura);if(o.decorazione)l+=" | <em>"+xe(o.decorazione)+"</em>";lines.push(l);}
+      if(o.torteExtra)o.torteExtra.forEach(function(t){var pw=t.modo==="pz"?(t.pezzi||1)+" pz":(t.modo==="kg"?(t.peso||"1kg"):(t.persone||8)+"p");lines.push(cn(t.prodotto)+" · "+pw+(t.farcitura?" | "+xe(t.farcitura):"")+(t.decorazione?" | <em>"+xe(t.decorazione)+"</em>":""));});
+      if(o.salProdotto)lines.push("🥗 <strong>"+xe(o.salProdotto)+"</strong> · "+(o.salModo==="kg"?(o.salPeso||"1kg"):(o.salQta||1)+" pz"));
+      if(o.salatiExtra)o.salatiExtra.forEach(function(s){lines.push("🥗 <strong>"+xe(s.prodotto)+"</strong> · "+(s.modo==="kg"?(s.peso||"1kg"):(s.qta||1)+" pz"));});
+      rows+='<tr style="border-bottom:3px solid #f0f0f0">';
+      rows+='<td style="padding:12px 14px;vertical-align:top;min-width:120px">';
+      rows+='<div style="font-size:16px;font-weight:800">'+xe(o.cliente)+'</div>';
+      if(o.orario)rows+='<div style="font-size:14px;font-weight:700;color:#c9a84c">⏰ '+o.orario+'</div>';
+      if(o.telefono)rows+='<div style="font-size:12px;color:#888">📞 '+xe(o.telefono)+'</div>';
+      if(o.consegna)rows+='<div style="font-size:12px;color:#9a3412;font-weight:700">🚗 CONSEGNA</div>';
+      rows+='</td>';
+      rows+='<td style="padding:12px 14px;vertical-align:top;font-size:14px;line-height:2">'+lines.join("<br>")+(o.note?'<br><span style="font-size:12px;color:#888;font-style:italic">📝 '+xe(o.note)+'</span>':'')+'</td>';
+      rows+='<td style="padding:12px 14px;vertical-align:top;text-align:right;font-size:17px;font-weight:800;white-space:nowrap">'+(tot>0?"€ "+tot.toFixed(2):"—")+'</td></tr>';
+    });
+    if(!rows)rows='<tr><td colspan="3" style="padding:20px;text-align:center;color:#aaa">Nessun ordine</td></tr>';
+    return {rows:rows,day:day};
+  }
+  var w=window.open("","_blank","width=720,height=960");
   var options="";
-  dates.forEach(function(date,i){
-    var cnt=opg(date).length;
-    options+='<option value="'+date+'"'+(date===td()?' selected':'')+'>'+GIORNI[i]+' '+fd(date)+' ('+cnt+' ordini)</option>';
-  });
-
-  var w=window.open('','_blank','width=720,height=960');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8">');
-  w.document.write('<title>Stampa Ordini</title>');
-  w.document.write('<style>');
-  w.document.write('*{box-sizing:border-box;margin:0;padding:0}');
-  w.document.write('body{font-family:Georgia,serif;background:#f5f5f5;color:#1a1207;padding:20px}');
-  w.document.write('.toolbar{background:#1a1207;color:#fff;padding:14px 18px;border-radius:10px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}');
-  w.document.write('.toolbar select{padding:8px 12px;border-radius:8px;border:none;font-size:14px;font-family:sans-serif;background:#fff;color:#1a1207;cursor:pointer}');
-  w.document.write('.toolbar button{padding:8px 16px;border-radius:8px;border:none;font-size:14px;font-weight:700;cursor:pointer}');
-  w.document.write('.btn-print{background:#c9a84c;color:#1a1207}');
-  w.document.write('.btn-close{background:#555;color:#fff}');
-  w.document.write('.header{border-bottom:3px solid #1a1207;padding-bottom:12px;margin-bottom:18px}');
-  w.document.write('.header h1{font-size:20px;font-weight:900}');
-  w.document.write('.header h2{font-size:15px;color:#c9a84c;font-weight:700;margin-top:3px}');
-  w.document.write('.header .meta{font-size:13px;color:#888;margin-top:3px}');
-  w.document.write('table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}');
-  w.document.write('thead tr{background:#1a1207}');
-  w.document.write('thead th{color:#c9a84c;padding:11px 14px;text-align:left;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase}');
-  w.document.write('thead th:last-child{text-align:right}');
-  w.document.write('tbody tr{border-bottom:2px solid #f0f0f0}');
-  w.document.write('tbody tr:last-child{border-bottom:none}');
-  w.document.write('tbody td{padding:12px 14px;vertical-align:top}');
-  w.document.write('.nome-cliente{font-size:16px;font-weight:800}');
-  w.document.write('.orario{font-size:14px;font-weight:700;color:#c9a84c;margin-top:2px}');
-  w.document.write('.tel{font-size:12px;color:#888;margin-top:2px}');
-  w.document.write('.cons{font-size:12px;color:#9a3412;font-weight:700;margin-top:2px}');
-  w.document.write('.prod-line{font-size:14px;line-height:2;margin-bottom:2px}');
-  w.document.write('.note{font-size:12px;color:#888;font-style:italic;margin-top:4px}');
-  w.document.write('.totale{font-size:17px;font-weight:900;white-space:nowrap}');
-  w.document.write('.footer{margin-top:16px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid #1a1207;padding-top:12px}');
-  w.document.write('.footer-tot{font-size:18px;font-weight:900}');
-  w.document.write('.footer-meta{font-size:12px;color:#888}');
-  w.document.write('@media print{.toolbar{display:none!important}body{background:#fff;padding:10px}thead tr{-webkit-print-color-adjust:exact;print-color-adjust:exact}span[style]{-webkit-print-color-adjust:exact;print-color-adjust:exact}}');
-  w.document.write('</style></head><body>');
-
-  // Toolbar
-  w.document.write('<div class="toolbar">');
-  w.document.write('<select id="day-sel" onchange="buildTable(this.value)">'+options+'</select>');
-  w.document.write('<button class="btn-print" onclick="window.print()">🖨️ Stampa</button>');
-  w.document.write('<button class="btn-close" onclick="window.close()">✕ Chiudi</button>');
-  w.document.write('</div>');
-  w.document.write('<div id="content"></div>');
-
-  // Inject data and build function
-  var ordiniJSON=JSON.stringify(ordini);
-  var giorniJSON=JSON.stringify(GIORNI);
-  var tcolJSON=JSON.stringify(TCOLORS);
-
+  dates.forEach(function(date,i){var cnt=opg(date).length;options+='<option value="'+date+'"'+(date===td()?" selected":"")+">"+GIORNI[i]+" "+fd(date)+" ("+cnt+" ordini)</option>";});
+  var init=buildRows(td());
+  var totG=init.day.reduce(function(s,o){return s+calcTot(o);},0);
+  var gi=dates.indexOf(td());
+  var nome=gi>=0?GIORNI[gi]:"";
+  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:Georgia,serif;background:#f5f5f5;padding:16px}';
+  css+='.tb{background:#1a1207;color:#fff;padding:12px 16px;border-radius:10px;margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}';
+  css+='.tb select{padding:8px 12px;border-radius:8px;border:none;font-size:14px;font-family:sans-serif;cursor:pointer}';
+  css+='.tb button{padding:8px 16px;border-radius:8px;border:none;font-size:14px;font-weight:700;cursor:pointer}';
+  css+='.hdr{border-bottom:3px solid #1a1207;padding-bottom:10px;margin-bottom:16px}';
+  css+='.hdr h1{font-size:20px;font-weight:900}.hdr h2{font-size:15px;color:#c9a84c;font-weight:700;margin-top:3px}.hdr .meta{font-size:13px;color:#888;margin-top:2px}';
+  css+='table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1)}';
+  css+='thead th{background:#1a1207;color:#c9a84c;padding:10px 14px;text-align:left;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase}';
+  css+='thead th:last-child{text-align:right}';
+  css+='.ftr{margin-top:14px;display:flex;justify-content:space-between;border-top:2px solid #1a1207;padding-top:10px}';
+  css+='.ftr-tot{font-size:18px;font-weight:900}.ftr-meta{font-size:12px;color:#888}';
+  css+='@media print{.tb{display:none!important}body{background:#fff;padding:8px}span[style]{-webkit-print-color-adjust:exact;print-color-adjust:exact}}';
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Stampa Ordini</title><style>'+css+'</style></head><body>');
+  w.document.write('<div class="tb"><select id="ds" onchange="upd(this.value)">'+options+'</select>');
+  w.document.write('<button style="background:#c9a84c;color:#1a1207" onclick="window.print()">🖨️ Stampa</button>');
+  w.document.write('<button style="background:#555;color:#fff" onclick="window.close()">✕ Chiudi</button></div>');
+  w.document.write('<div id="ct"></div>');
+  // inject data as JSON
+  var data={ordini:ordini,GIORNI:GIORNI,TCOLORS:TCOLORS,DRIVE:DRIVE};
   w.document.write('<scr'+'ipt>');
-  w.document.write('var ordini='+ordiniJSON+';');
-  w.document.write('var GIORNI='+giorniJSON+';');
-  w.document.write('var TCOLORS='+tcolJSON+';');
-  w.document.write('function fd(iso){try{var a=iso.split("-");return a[2]+"/"+a[1];}catch(e){return iso;}}');
-  w.document.write('function fdf(iso){try{var a=iso.split("-");return a[2]+"/"+a[1]+"/"+a[0];}catch(e){return iso;}}');
-  w.document.write('function xe(s){return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}');
+  w.document.write('var D='+JSON.stringify(data)+';');
+  w.document.write('function fd(s){try{var a=s.split("-");return a[2]+"/"+a[1];}catch(e){return s;}}');
+  w.document.write('function fdf(s){try{var a=s.split("-");return a[2]+"/"+a[1]+"/"+a[0];}catch(e){return s;}}');
+  w.document.write('function xe(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");}');
   w.document.write('function p2kg(p){return p.endsWith("kg")?parseFloat(p):parseFloat(p)/1000;}');
   w.document.write('function cKg(n,g){return n*g/1000;}');
-  w.document.write('function orMin(s){if(!s)return 9999;var m=s.match(/^(\\d{1,2}):(\\d{2})$/);if(m)return parseInt(m[1])*60+parseInt(m[2]);return 9999;}');
-  w.document.write('function getTCol(n){return TCOLORS[n]||"#e5e7eb";}');
-  w.document.write('function cn(n){var c=getTCol(n);return '<span style="background:'+c+';color:#1a1207;padding:2px 8px;border-radius:6px;font-weight:800;display:inline-block">'+xe(n)+'</span>';}');
-  w.document.write('function calcTot(o){');
-  w.document.write('  var tot=0;');
-  w.document.write('  function addT(t){var pk=parseFloat(t.prezzoKg)||0;var kg=t.modo==="kg"?p2kg(t.peso||"1kg")*(t.qtaTorte||1):t.modo==="pers"?cKg(t.persone||8,t.grammi||150)*(t.qtaTorte||1):0;tot+=pk*kg;}');
-  w.document.write('  if(o.prodotto)addT({prodotto:o.prodotto,modo:o.modo||(o.modoKg===false?"pers":"kg"),peso:o.peso,persone:o.persone,grammi:o.grammi,qtaTorte:o.qtaTorte,prezzoKg:o.prezzoKg});');
-  w.document.write('  if(o.torteExtra)o.torteExtra.forEach(addT);');
-  w.document.write('  if(o.consegna)tot+=10;');
-  w.document.write('  return tot;');
+  w.document.write('function orMin(s){if(!s)return 9999;var m=s.match(/^(\\d{1,2}):(\\d{2})$/);return m?parseInt(m[1])*60+parseInt(m[2]):9999;}');
+  w.document.write('function calcTot(o){var t=0;function aT(x){var pk=parseFloat(x.prezzoKg)||0;var kg=x.modo==="kg"?p2kg(x.peso||"1kg")*(x.qtaTorte||1):x.modo==="pers"?cKg(x.persone||8,x.grammi||150)*(x.qtaTorte||1):0;t+=pk*kg;}if(o.prodotto)aT({prodotto:o.prodotto,modo:o.modo||(o.modoKg===false?"pers":"kg"),peso:o.peso,persone:o.persone,grammi:o.grammi,qtaTorte:o.qtaTorte,prezzoKg:o.prezzoKg});if(o.torteExtra)o.torteExtra.forEach(aT);if(o.consegna)t+=10;return t;}');
+  w.document.write('function cn(nome){var c=D.TCOLORS[nome]||"#e5e7eb";return '<span style="background:'+c+';color:#1a1207;padding:1px 7px;border-radius:5px;font-weight:800">'+nome+'</span>';}');
+  w.document.write('function upd(date){');
+  w.document.write('var day=D.ordini.filter(function(o){return o.data===date;}).sort(function(a,b){var oa=orMin(a.orario),ob=orMin(b.orario);return oa!==ob?oa-ob:(a.cliente||"").localeCompare(b.cliente||"");});');
+  w.document.write('var dates=[],n=new Date(date),wd=n.getDay(),di=n.getDate()-wd+(wd===0?-6:1);var mo=new Date(n.setDate(di));for(var i=0;i<7;i++){var d=new Date(mo);d.setDate(mo.getDate()+i);dates.push(d.toISOString().split("T")[0]);}');
+  w.document.write('var gi=dates.indexOf(date),nome=gi>=0?D.GIORNI[gi]:"";');
+  w.document.write('var totG=day.reduce(function(s,o){return s+calcTot(o);},0);');
+  w.document.write('var rows="";');
+  w.document.write('day.forEach(function(o){var lines=[],tot=calcTot(o);');
+  w.document.write('if(o.prodotto){var pw=o.modo==="pz"?(o.pezzi||1)+" pz":(o.modo==="kg"?(o.peso||"1kg"):(o.persone||8)+"p");lines.push(cn(o.prodotto)+" · "+pw+(o.farcitura?" | "+xe(o.farcitura):"")+(o.decorazione?" | <em>"+xe(o.decorazione)+"</em>":""));}');
+  w.document.write('if(o.torteExtra)o.torteExtra.forEach(function(t){var pw=t.modo==="pz"?(t.pezzi||1)+" pz":(t.modo==="kg"?(t.peso||"1kg"):(t.persone||8)+"p");lines.push(cn(t.prodotto)+" · "+pw+(t.farcitura?" | "+xe(t.farcitura):"")+(t.decorazione?" | <em>"+xe(t.decorazione)+"</em>":""));});');
+  w.document.write('if(o.salProdotto)lines.push("🥗 <strong>"+xe(o.salProdotto)+"</strong> · "+(o.salModo==="kg"?(o.salPeso||"1kg"):(o.salQta||1)+" pz"));');
+  w.document.write('if(o.salatiExtra)o.salatiExtra.forEach(function(s){lines.push("🥗 <strong>"+xe(s.prodotto)+"</strong> · "+(s.modo==="kg"?(s.peso||"1kg"):(s.qta||1)+" pz"));});');
+  w.document.write('rows+='<tr style="border-bottom:3px solid #f0f0f0"><td style="padding:12px 14px;vertical-align:top;min-width:120px"><div style="font-size:16px;font-weight:800">'+xe(o.cliente)+'</div>';');
+  w.document.write('if(o.orario)rows+='<div style="font-size:14px;font-weight:700;color:#c9a84c">⏰ '+o.orario+'</div>';');
+  w.document.write('if(o.telefono)rows+='<div style="font-size:12px;color:#888">📞 '+xe(o.telefono)+'</div>';');
+  w.document.write('if(o.consegna)rows+='<div style="font-size:12px;color:#9a3412;font-weight:700">🚗 CONSEGNA</div>';');
+  w.document.write('rows+='</td><td style="padding:12px 14px;vertical-align:top;font-size:14px;line-height:2">'+lines.join("<br>")+(o.note?'<br><span style="font-size:12px;color:#888;font-style:italic">📝 '+xe(o.note)+'</span>':"")+"</td>";');
+  w.document.write('rows+='<td style="padding:12px 14px;vertical-align:top;text-align:right;font-size:17px;font-weight:800;white-space:nowrap">'+( tot>0?"€ "+tot.toFixed(2):"—")+'</td></tr>';');
+  w.document.write('});');
+  w.document.write('if(!rows)rows='<tr><td colspan="3" style="padding:20px;text-align:center;color:#aaa">Nessun ordine</td></tr>';');
+  w.document.write('document.getElementById("ct").innerHTML='<div class="hdr"><h1>Pasticceria Artigianale Fagotti</h1><h2>'+nome+" "+fdf(date)+'</h2><div class="meta">'+day.length+' ordini</div></div><table><thead><tr><th>Cliente</th><th>Prodotto</th><th style="text-align:right">Totale</th></tr></thead><tbody>'+rows+'</tbody></table><div class="ftr"><div class="ftr-meta">Stampato il '+fdf(new Date().toISOString().split("T")[0])+'</div>'+( totG>0?'<div class="ftr-tot">Totale: € '+totG.toFixed(2)+'</div>':"")+'</div>';');
   w.document.write('}');
-  w.document.write('function buildTable(date){');
-  w.document.write('  var day=ordini.filter(function(o){return o.data===date;}).sort(function(a,b){var oa=orMin(a.orario),ob=orMin(b.orario);return oa!==ob?oa-ob:(a.cliente||"").localeCompare(b.cliente||"");});');
-  w.document.write('  var dates=[];for(var d=new Date(date.replace(/-/g,"/")),wd=d.getDay(),di=d.getDate()-wd+(wd===0?-6:1),mo=new Date(d.setDate(di)),i=0;i<7;i++){var dd=new Date(mo);dd.setDate(mo.getDate()+i);dates.push(dd.toISOString().split("T")[0]);}');
-  w.document.write('  var gi=dates.indexOf(date);');
-  w.document.write('  var nome=gi>=0?GIORNI[gi]:"";');
-  w.document.write('  var totG=day.reduce(function(s,o){return s+calcTot(o);},0);');
-  w.document.write('  var rows="";');
-  w.document.write('  day.forEach(function(o){');
-  w.document.write('    var lines=[],tot=calcTot(o);');
-  w.document.write('    if(o.prodotto){var pw=o.modo==="pz"?(o.pezzi||1)+" pz":(o.modo==="kg"?(o.peso||"1kg"):(o.persone||8)+"p");var l=cn(o.prodotto)+" · "+pw;if(o.farcitura)l+=" | "+xe(o.farcitura);if(o.decorazione)l+=' | <em>'+xe(o.decorazione)+"</em>";lines.push(l);}');
-  w.document.write('    if(o.torteExtra)o.torteExtra.forEach(function(t){var pw=t.modo==="pz"?(t.pezzi||1)+" pz":(t.modo==="kg"?(t.peso||"1kg"):(t.persone||8)+"p");var l=cn(t.prodotto)+" · "+pw;if(t.farcitura)l+=" | "+xe(t.farcitura);if(t.decorazione)l+=' | <em>'+xe(t.decorazione)+"</em>";lines.push(l);});');
-  w.document.write('    if(o.salProdotto)lines.push("🥗 <strong>"+xe(o.salProdotto)+"</strong> · "+(o.salModo==="kg"?(o.salPeso||"1kg"):(o.salQta||1)+" pz"));');
-  w.document.write('    if(o.salatiExtra)o.salatiExtra.forEach(function(s){lines.push("🥗 <strong>"+xe(s.prodotto)+"</strong> · "+(s.modo==="kg"?(s.peso||"1kg"):(s.qta||1)+" pz"));});');
-  w.document.write('    rows+='<tr><td><div class="nome-cliente">'+xe(o.cliente)+'</div>';');
-  w.document.write('    if(o.orario)rows+='<div class="orario">⏰ '+o.orario+'</div>';');
-  w.document.write('    if(o.telefono)rows+='<div class="tel">📞 '+xe(o.telefono)+'</div>';');
-  w.document.write('    if(o.consegna)rows+='<div class="cons">🚗 CONSEGNA</div>';');
-  w.document.write('    rows+='</td><td>'+lines.map(function(l){return '<div class="prod-line">'+l+"</div>";}).join("")+(o.note?'<div class="note">📝 '+xe(o.note)+"</div>":"")+'</td>';');
-  w.document.write('    rows+='<td class="totale">'+( tot>0?"€ "+tot.toFixed(2):"—")+'</td></tr>';');
-  w.document.write('  });');
-  w.document.write('  if(!rows)rows='<tr><td colspan="3" style="padding:20px;text-align:center;color:#aaa">Nessun ordine</td></tr>';');
-  w.document.write('  var html='<div class="header"><h1>Pasticceria Artigianale Fagotti</h1><h2>'+nome+" "+fdf(date)+'</h2><div class="meta">'+day.length+' ordini</div></div>';');
-  w.document.write('  html+='<table><thead><tr><th>Cliente</th><th>Prodotto</th><th style="text-align:right">Totale</th></tr></thead><tbody>'+rows+'</tbody></table>';');
-  w.document.write('  html+='<div class="footer"><div class="footer-meta">Stampato il '+fdf(new Date().toISOString().split("T")[0])+'</div>';');
-  w.document.write('  if(totG>0)html+='<div class="footer-tot">Totale: € '+totG.toFixed(2)+'</div>';');
-  w.document.write('  html+="</div>";');
-  w.document.write('  document.getElementById("content").innerHTML=html;');
-  w.document.write('}');
-  w.document.write('buildTable(document.getElementById("day-sel").value);');
+  w.document.write('upd(document.getElementById("ds").value);');
   w.document.write('<\/scr'+'ipt>');
   w.document.write('</body></html>');
   w.document.close();
