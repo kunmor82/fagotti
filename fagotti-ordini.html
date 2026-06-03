@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Fagotti — Ordini</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--nero:#1a1207;--oro:#c9a84c;--oro-l:#fdf5e0;--cream:#faf8f5;--brd:#e0d8cc}
@@ -223,20 +225,8 @@ textarea.fi{resize:vertical}
 </datalist>
 
 <script>
-// Firebase initialized later via initFB()
-var db=null;
-function initFB(){
-  try{
-    firebase.initializeApp({apiKey:"AIzaSyDTZFJlCeH6pmwE3tp3qU5dGh7x6XrHe2Q",authDomain:"ordini-fagotti-bd9d8.firebaseapp.com",projectId:"ordini-fagotti-bd9d8",storageBucket:"ordini-fagotti-bd9d8.firebasestorage.app",messagingSenderId:"968063747672",appId:"1:968063747672:web:6c2476600dfeea517cec2d"});
-    db=firebase.firestore();
-    window.db=db;
-    window._fbReady=true;
-    // if already logged in, start app now
-    if(sessionStorage.getItem("fa")&&G("app").classList.contains("on")){
-      startApp();
-    }
-  }catch(e){console.error("FB init error:",e);}
-}
+firebase.initializeApp({apiKey:"AIzaSyDTZFJlCeH6pmwE3tp3qU5dGh7x6XrHe2Q",authDomain:"ordini-fagotti-bd9d8.firebaseapp.com",projectId:"ordini-fagotti-bd9d8",storageBucket:"ordini-fagotti-bd9d8.firebasestorage.app",messagingSenderId:"968063747672",appId:"1:968063747672:web:6c2476600dfeea517cec2d"});
+var db=firebase.firestore();
 
 var LISTINO={"Afrodite":30,"Black Forest":27,"Brownie":27,"Caprese":27,"Cestino Fagottini":35,"Charlotte cioccolato":27,"Charlotte limone":35,"Cheesecake":30,"Cream tart":30,"Crema al burro":30,"Crostata marmellata":27,"Crostata cioccolato":27,"Crostata ricotta":27,"Crostata frutta":30,"Diplomatica":27,"Dolce castagne":35,"Dolce arachidi/nocciole":35,"Dolce Fagotti":30,"Dolce Ilaria":27,"Kinder":27,"Lemon tart":30,"Mandarinoir":35,"Marika":35,"Meringata cioccolato/fragole":27,"Meringata frutti bosco":30,"Meringata limone/castagne":35,"Millefoglie classico":27,"Millefoglie frutti bosco":30,"Millefoglie fragole":27,"Mimosa":27,"Montblanc":35,"Moretta":27,"Ohana":30,"Pasta zucchero":35,"Pastiera":30,"Pavlova":30,"Profitterole":27,"Red Velvet":30,"Sacher":27,"Saint Honorè":27,"Serendipity":35,"Settembrina":35,"Struffoli":35,"Sveva":35,"Tiramisù classico":30,"Tiramisù fragole":30,"Tre cioccolati":30,"Tronchetto Natale":35,"Ugly cake":30,"Zuccotto":27,"Torta Gelato":27,"Zuppa inglese":27};
 var SAL_KG=["Bottoncini/cornettini/genovesi","Pizzette/rustici","Torte rustiche"];
@@ -261,43 +251,27 @@ function newS(){return {prodotto:"",modo:"pz",peso:"1kg",qta:1};}
 
 // AUTH
 function doLogin(){
-  var pwd=G("pwd").value;
-  if(pwd==="fagotti2024"){
+  if(G("pwd").value==="fagotti2024"){
     sessionStorage.setItem("fa","1");
     G("login").classList.add("hidden");
     G("app").classList.add("on");
     startApp();
-  } else if(pwd===""){
-    G("lerr").textContent="Inserisci la password.";
   } else {
     G("lerr").textContent="Password errata.";
     G("pwd").value="";
   }
 }
-
-// pwd enter key + session check
-document.addEventListener("DOMContentLoaded",function(){
-  var p=G("pwd");
-  if(p) p.addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
-  if(sessionStorage.getItem("fa")){
-    G("login").classList.add("hidden");
-    G("app").classList.add("on");
-    // startApp called by initFB when firebase is ready
-    // but also try immediately in case firebase already loaded
-    if(db) startApp();
-  }
-});
+G("pwd").addEventListener("keydown",function(e){if(e.key==="Enter")doLogin();});
+if(sessionStorage.getItem("fa")){
+  G("login").classList.add("hidden");
+  G("app").classList.add("on");
+  window.addEventListener("load",startApp);
+}
 
 // FIREBASE
 function sync(s){var m={ok:["#22c55e","● Sync"],lo:["#f59e0b","● ..."],er:["#ef4444","● Err"]};G("sdot").style.background=m[s][0];G("slbl").textContent=m[s][1];G("slbl").style.color=m[s][0];}
 function startApp(){
   G("fdata").value=td();
-  if(!db){
-    // Firebase not ready yet, wait and retry
-    sync("lo");
-    setTimeout(startApp,500);
-    return;
-  }
   sync("lo");
   db.collection("ordini").onSnapshot(function(snap){
     ordini=snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});
@@ -774,7 +748,6 @@ function resetForm(){
   G("sbtn").disabled=true;G("sbtn").textContent="✓ Aggiungi ordine";
   G("cbtn").style.display="none";G("ftitle").textContent="NUOVO ORDINE";editId=null;
 }
-</script><script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js" onload="initFB()"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</script>
 </body>
 </html>
